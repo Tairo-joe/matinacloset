@@ -13,7 +13,7 @@ main.container {
   padding-right: 15px;
 }
 
-/* Mobile navbar fixes */
+/* Mobile navbar fixes - GLOBAL FOR ALL PAGES */
 @media (max-width: 768px) {
   body {
     padding-top: 50px; /* Even smaller on mobile */
@@ -32,6 +32,15 @@ main.container {
   .navbar-toggler {
     padding: 0.25rem 0.5rem;
     font-size: 1rem;
+  }
+  
+  /* Force hamburger menu on all pages */
+  .navbar-collapse.show {
+    display: none !important;
+  }
+  
+  .navbar-collapse.collapsing {
+    display: none !important;
   }
   
   /* Improved mobile menu that doesn't cover content */
