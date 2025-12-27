@@ -99,6 +99,29 @@ main.container .row.g-2.align-items-end {
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
+/* Mobile dropdown fix */
+.dropdown-menu {
+  position: absolute !important;
+  z-index: 1050 !important;
+  transform: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+@media (max-width: 768px) {
+  .dropdown-menu.dropdown-menu-end {
+    right: 0 !important;
+    left: auto !important;
+  }
+  
+  .navbar-collapse {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}
+
 /* Login page logo styling */
 .brand-logo img {
   object-fit: contain;
