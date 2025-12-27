@@ -14,7 +14,7 @@ const App = (() => {
           <button class="btn btn-sm btn-outline-danger dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/user-login-5504124-4585176.png" alt="Account" class="icon-logout">
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+          <ul class="dropdown-menu" aria-labelledby="userDropdown">
             <li><a class="dropdown-item" href="/account.html">Orders</a></li>
             ${user.role === 'admin' ? '<li><a class="dropdown-item" href="/admin/index.html">Admin</a></li>' : ''}
             <li><hr class="dropdown-divider"></li>
@@ -34,7 +34,7 @@ const App = (() => {
           <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/user-login-5504124-4585176.png" alt="Account" class="icon-logout">
           </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
+          <ul class="dropdown-menu" aria-labelledby="authDropdown">
             <li><a class="dropdown-item" href="/login.html">Login</a></li>
             <li><a class="dropdown-item" href="/register.html">Register</a></li>
           </ul>
