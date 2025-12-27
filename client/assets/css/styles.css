@@ -1,0 +1,122 @@
+body { padding-top: 70px; }
+
+/* Main content spacing */
+main.container {
+  padding-top: 1rem;
+}
+
+/* Register page specific styling (no navbar) */
+body:has(main.container .min-vh-100) {
+  padding-top: 0;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+}
+
+main.container .min-vh-100 {
+  padding: 2rem 0;
+}
+
+main.container .col-md-6 {
+  background: white;
+  border-radius: 1rem;
+  padding: 2.5rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+main.container .col-md-6 .h3 {
+  font-weight: 600;
+  color: #212529;
+}
+
+main.container .col-md-6 .form-label {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+main.container .col-md-6 .form-control {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+main.container .col-md-6 .form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+main.container .col-md-6 .btn-primary {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  background: #0d6efd;
+  border: none;
+  transition: background-color 0.15s ease-in-out;
+}
+
+main.container .col-md-6 .btn-primary:hover {
+  background: #0b5ed7;
+}
+
+main.container .col-md-6 .text-decoration-none {
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+main.container .col-md-6 .text-decoration-none:hover {
+  color: #0b5ed7;
+  text-decoration: underline;
+}
+
+/* Filter section styling */
+main.container .row:first-child {
+  margin-top: 0.5rem;
+}
+
+/* Filter form elements styling */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.form-select, .form-control {
+  min-height: 38px;
+}
+
+/* Filter row alignment */
+main.container .row.g-2.align-items-end {
+  margin-bottom: 1rem;
+}
+
+/* Logo styling for high quality and visibility */
+.navbar-brand img {
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Login page logo styling */
+.brand-logo img {
+  object-fit: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+
+/* Cart logo styling */
+.icon-bag {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+/* Utilities */
+.thumb-56 { width: 56px; height: 56px; object-fit: cover; }
+.thumb-48 { width: 48px; height: 48px; object-fit: cover; }
+.w-100px { width: 100px; }
+.maxw-520 { max-width: 520px; }
+.w-140 { width: 140px; }

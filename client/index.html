@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MatinaCloset — Shop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <style>
+    .color-swatch {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid #ddd;
+      margin-right: 4px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .color-swatch:hover {
+      transform: scale(1.1);
+      border-color: #999;
+    }
+    .icon-logout {
+      width: 24px;
+      height: 24px;
+    }
+    .icon-bag {
+      width: 24px;
+      height: 24px;
+    }
+    .gender-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .gender-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .gender-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+    .main-container {
+      padding-top: 2rem;
+    }
+    .men-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .women-card {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    .boys-card {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    .girls-card {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    .gender-card-link {
+      cursor: pointer;
+    }
+    .gender-icon img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+      background-color: rgba(255,255,255,0.1);
+    }
+    .gender-icon img:hover {
+      transform: scale(1.05);
+    }
+    .navbar {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    .navbar-brand img {
+      width: 45px !important;
+      height: 45px !important;
+    }
+    .navbar-nav .nav-link {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="/men.html">Men</a></li>
+          <li class="nav-item"><a class="nav-link" href="/women.html">Women</a></li>
+          <li class="nav-item"><a class="nav-link" href="/boys.html">Boys</a></li>
+          <li class="nav-item"><a class="nav-link" href="/girls.html">Girls</a></li>
+          <li class="nav-item"><a class="nav-link" href="/cart.html"><img src="https://th.bing.com/th?q=Shopping+Mall+Bag+Logo&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.5&pid=InlineBlock&rm=3&mkt=en-SG&cc=SG&setlang=en&adlt=strict&t=1&mw=247" alt="Bag" class="icon-bag"></a></li>
+        </ul>
+        <div id="navbarAuth" class="d-flex"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container main-container">
+    <!-- Gender Selection Section -->
+    <div class="text-center mb-5">
+      <h1 class="display-4 fw-bold mb-3">Shop by Gender</h1>
+      <p class="lead text-muted">Discover the perfect fashion for everyone in your family</p>
+    </div>
+
+    <div class="row g-4 mb-5">
+      <!-- Men Section -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm gender-card men-card gender-card-link" onclick="location.href='/men.html'">
+          <div class="card-body text-center text-white p-4">
+            <div class="gender-icon mb-3">
+              <img src="https://tse1.mm.bing.net/th/id/OIP.yD_gratJV8i_4kbSZdqg9AHaJO?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Men's Fashion">
+            </div>
+            <h3 class="card-title">Men</h3>
+            <p class="card-text">Stylish men's fashion</p>
+            <div class="badge bg-white text-dark">Shop Now →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Women Section -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm gender-card women-card gender-card-link" onclick="location.href='/women.html'">
+          <div class="card-body text-center text-white p-4">
+            <div class="gender-icon mb-3">
+              <img src="https://www1.assets-gap.com/webcontent/0060/378/082/cn60378082.jpg?q=h&w=520" alt="Women's Fashion">
+            </div>
+            <h3 class="card-title">Women</h3>
+            <p class="card-text">Trendy women's styles</p>
+            <div class="badge bg-white text-dark">Shop Now →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Boys Section -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm gender-card boys-card gender-card-link" onclick="location.href='/boys.html'">
+          <div class="card-body text-center text-white p-4">
+            <div class="gender-icon mb-3">
+              <img src="https://www.gap.com/webcontent/0059/977/992/cn59977992.jpg" alt="Boys' Fashion">
+            </div>
+            <h3 class="card-title">Boys</h3>
+            <p class="card-text">Cool boys' clothing</p>
+            <div class="badge bg-white text-dark">Shop Now →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Girls Section -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm gender-card girls-card gender-card-link" onclick="location.href='/girls.html'">
+          <div class="card-body text-center text-white p-4">
+            <div class="gender-icon mb-3">
+              <img src="https://www.gap.com/webcontent/0060/032/158/cn60032158.jpg" alt="Girls' Fashion">
+            </div>
+            <h3 class="card-title">Girls</h3>
+            <p class="card-text">Cute girls' outfits</p>
+            <div class="badge bg-white text-dark">Shop Now →</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured Products Section -->
+    <div class="text-center mb-4">
+      <h2 class="display-5 fw-bold">Featured Products</h2>
+      <p class="lead text-muted">Handpicked items from our collection</p>
+    </div>
+
+    <div class="row mb-3 g-2 align-items-end">
+      <div class="col-12 col-lg-2">
+        <label class="form-label">Category</label>
+        <select id="filterCategory" class="form-select"><option value="">All</option></select>
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label">Min Price</label>
+        <input id="filterMin" type="number" step="0.01" class="form-control" placeholder="0">
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label">Max Price</label>
+        <input id="filterMax" type="number" step="0.01" class="form-control" placeholder="100">
+      </div>
+      <div class="col-6 col-lg-2">
+        <label class="form-label">Min Rating</label>
+        <select id="filterRating" class="form-select">
+          <option value="">Any</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+      <div class="col-6 col-lg-3">
+        <label class="form-label">Search</label>
+        <input id="filterSearch" type="search" class="form-control" placeholder="Search products">
+      </div>
+      <div class="col-12 col-lg-1 d-grid">
+        <button id="btnApply" type="button" class="btn btn-primary">Apply</button>
+      </div>
+    </div>
+
+    <div id="productGrid" class="row g-3"></div>
+  </main>
+
+  <footer class="container text-center">
+    <script>
+      document.write(new Date().getFullYear());
+    </script>
+    MatinaCloset
+  </footer>
+
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script src="/assets/js/product-carousel.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    App.initNavbar();
+
+    async function loadCategories() {
+      const cats = await API.products.categories();
+      const sel = document.getElementById('filterCategory');
+      cats.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c; opt.textContent = c; sel.appendChild(opt);
+      });
+    }
+
+    function productCard(p) {
+      const rating = Number(p.avgRating || 0).toFixed(1);
+      
+      // Handle multiple images for carousel
+      console.log(`Product ${p.id} images:`, p.images); // Debug log
+      const hasMultipleImages = p.images && p.images.length > 1;
+      console.log(`Product ${p.id} hasMultipleImages:`, hasMultipleImages); // Debug log
+      
+      // Generate consistent carousel ID (no Date.now())
+      const carouselId = `carousel-${p.id}`;
+      
+      // Display sizes
+      const sizes = p.sizes && p.sizes.length > 0 ? p.sizes.join(', ') : '';
+      
+      // Display colors with color swatches - handle both array and string formats
+      let colors = '';
+      if (p.colors) {
+        let colorArray = [];
+        if (typeof p.colors === 'string') {
+          // Handle comma-separated string
+          colorArray = p.colors.split(',').map(c => c.trim()).filter(c => c);
+        } else if (Array.isArray(p.colors)) {
+          // Handle array format
+          colorArray = p.colors;
+        }
+        
+        if (colorArray.length > 0) {
+          colors = colorArray.map(color => `<span class="color-swatch" style="background-color: ${getColorHex(color)};" title="${color}"></span>`).join('');
+        }
+      }
+      
+      return `
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-img-top-wrapper" style="height: 450px; overflow: hidden; position: relative;">
+            ${hasMultipleImages ? `
+              <!-- Custom Product Carousel -->
+              <div id="${carouselId}" class="w-100 h-100"></div>
+            ` : `
+              <!-- Single Image -->
+              <img src="${p.imageURL || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQ1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4='}" class="card-img-top" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
+            `}
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">${p.name}</h5>
+            <div class="mb-2">
+              ${sizes ? `<div class="mb-1"><small class="text-muted">Sizes:</small> <span class="badge bg-secondary me-1">${sizes}</span></div>` : ''}
+              ${colors ? `<div class="mb-1"><small class="text-muted">Colors:</small> ${colors}</div>` : ''}
+            </div>
+            <div class="mb-1 d-flex align-items-center gap-2">
+              <span class="rating">${UI.stars(p.avgRating)}</span>
+              <small class="text-muted">${rating} (${p.reviewCount||0})</small>
+            </div>
+            <div class="fw-bold mb-2">${UI.fmtPrice(p.price)}</div>
+            <div class="mt-auto d-flex gap-2">
+              <a class="btn btn-sm btn-outline-secondary" href="/product.html?id=${p.id}">Details</a>
+              <button class="btn btn-sm btn-primary" data-add="${p.id}">Add to bag</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+    
+    // Helper function to get hex color from color name
+    function getColorHex(colorName) {
+      const colors = {
+        'red': '#FF0000', 'Red': '#FF0000', 'RED': '#FF0000',
+        'blue': '#0000FF', 'Blue': '#0000FF', 'BLUE': '#0000FF',
+        'green': '#008000', 'Green': '#008000', 'GREEN': '#008000',
+        'black': '#000000', 'Black': '#000000', 'BLACK': '#000000',
+        'white': '#FFFFFF', 'White': '#FFFFFF', 'WHITE': '#FFFFFF',
+        'yellow': '#FFFF00', 'Yellow': '#FFFF00', 'YELLOW': '#FFFF00',
+        'orange': '#FFA500', 'Orange': '#FFA500', 'ORANGE': '#FFA500',
+        'purple': '#800080', 'Purple': '#800080', 'PURPLE': '#800080',
+        'pink': '#FFC0CB', 'Pink': '#FFC0CB', 'PINK': '#FFC0CB',
+        'brown': '#A52A2A', 'Brown': '#A52A2A', 'BROWN': '#A52A2A',
+        'gray': '#808080', 'Gray': '#808080', 'GRAY': '#808080',
+        'grey': '#808080', 'Grey': '#808080', 'GREY': '#808080',
+        'navy': '#000080', 'Navy': '#000080', 'NAVY': '#000080',
+        'beige': '#F5F5DC', 'Beige': '#F5F5DC', 'BEIGE': '#F5F5DC',
+        'tan': '#D2B48C', 'Tan': '#D2B48C', 'TAN': '#D2B48C'
+      };
+      return colors[colorName] || '#CCCCCC';
+    }
+
+    async function loadProducts() {
+      const filters = {
+        category: document.getElementById('filterCategory').value,
+        minPrice: document.getElementById('filterMin').value,
+        maxPrice: document.getElementById('filterMax').value,
+        rating: document.getElementById('filterRating').value,
+        search: document.getElementById('filterSearch').value,
+      };
+      console.log('User dashboard - loading products with filters:', filters);
+      
+      const products = await API.products.list(filters);
+      console.log(`User dashboard - received ${products.length} products:`, products.map(p => p.name));
+      
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = products.map(productCard).join('');
+      
+      console.log(`User dashboard - rendered ${products.length} product cards`);
+      
+      // Initialize custom carousels for products with multiple images
+      setTimeout(() => {
+        products.forEach(p => {
+          if (p.images && p.images.length > 1) {
+            // Use the same ID generation as in productCard
+            const carouselId = `carousel-${p.id}`;
+            const carouselElement = document.getElementById(carouselId);
+            
+            console.log(`Looking for carousel element: ${carouselId}`);
+            console.log(`Product ${p.id} has ${p.images ? p.images.length : 0} images`);
+            
+            if (carouselElement) {
+              console.log(`Found carousel element for product ${p.id}`);
+              if (typeof ProductCarousel !== 'undefined') {
+                try {
+                  const carousel = new ProductCarousel(carouselId, p.images, {
+                    interval: 4000,
+                    transition: 'fade',
+                    showIndicators: true,
+                    showControls: false, // Remove left/right arrows
+                    pauseOnHover: true
+                  });
+                  console.log(`✅ Initialized custom carousel for product ${p.id} with ${p.images.length} images`);
+                } catch (error) {
+                  console.error(`❌ Failed to initialize carousel for product ${p.id}:`, error);
+                }
+              } else {
+                console.error('❌ ProductCarousel class not loaded! Make sure product-carousel.js is included.');
+              }
+            } else {
+              console.warn(`❌ Carousel element not found for product ${p.id} with ID: ${carouselId}`);
+              // Debug: show what elements actually exist
+              const allCarousels = document.querySelectorAll('[id^="carousel-"]');
+              console.log(`Found carousel elements:`, Array.from(allCarousels).map(el => el.id));
+            }
+          }
+        });
+      }, 100);
+      
+      grid.querySelectorAll('[data-add]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = Number(btn.getAttribute('data-add'));
+          console.log(`🖱️ Add to bag clicked: Product ID ${id}`);
+          
+          // Validate product ID
+          if (!id || id <= 0) {
+            console.error('❌ Invalid product ID from button:', id);
+            UI.toast('Invalid product - cannot add to bag');
+            return;
+          }
+          
+          const token = API.auth.getToken();
+          console.log('🔑 Authentication token:', token ? 'Present' : 'Missing');
+          
+          if (token) {
+            try {
+              console.log('📤 Sending API request to add product to cart...');
+              const result = await API.cart.add(id, 1);
+              console.log('✅ Cart API response:', result);
+              UI.toast('Added to bag');
+            } catch (error) {
+              console.error('❌ Error adding to bag:', error);
+              console.error('❌ Full error details:', error.message);
+              UI.toast('Failed to add to bag: ' + error.message);
+            }
+          } else {
+            console.log('🔒 User not authenticated - redirecting to login');
+            UI.toast('Please log in or create an account to add items to bag');
+            location.href = '/login.html';
+            return;
+          }
+        });
+      });
+    }
+
+    document.getElementById('btnApply').addEventListener('click', loadProducts);
+    document.getElementById('filterSearch').addEventListener('keydown', e => { if (e.key === 'Enter') loadProducts(); });
+
+    loadCategories().then(loadProducts);
+  </script>
+</body>
+</html>

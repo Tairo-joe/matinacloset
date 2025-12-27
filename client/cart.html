@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MatinaCloset — Cart</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <style>
+    .color-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid #dee2e6;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .icon-logout {
+      width: 24px;
+      height: 24px;
+    }
+    .icon-bag {
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+      </a>
+      <div class="collapse navbar-collapse show">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Shop</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/cart.html"><img src="https://th.bing.com/th?q=Shopping+Mall+Bag+Logo&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.5&pid=InlineBlock&rm=3&mkt=en-SG&cc=SG&setlang=en&adlt=strict&t=1&mw=247" alt="Bag" class="icon-bag"></a></li>
+        </ul>
+        <div id="navbarAuth" class="d-flex"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h2 class="mb-3">Shopping Bag</h2>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>Product</th><th>Price</th><th class="w-140">Qty</th><th>Subtotal</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+      <a class="btn btn-outline-secondary" href="/">Continue shopping</a>
+      <div class="fs-4">Total: <span id="total">$0.00</span></div>
+    </div>
+    <div class="text-end mt-3">
+      <a id="btnCheckout" class="btn btn-primary" href="/checkout.html">Proceed to Checkout</a>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script>
+    // Function to convert color names to hex codes
+    function getColorHex(colorName) {
+      const colorMap = {
+        'red': '#FF0000',
+        'blue': '#0000FF',
+        'black': '#000000',
+        'white': '#FFFFFF',
+        'green': '#008000',
+        'yellow': '#FFFF00',
+        'orange': '#FFA500',
+        'purple': '#800080',
+        'pink': '#FFC0CB',
+        'brown': '#A52A2A',
+        'gray': '#808080',
+        'grey': '#808080',
+        'navy': '#000080',
+        'teal': '#008080',
+        'lime': '#00FF00',
+        'cyan': '#00FFFF',
+        'magenta': '#FF00FF',
+        'gold': '#FFD700',
+        'silver': '#C0C0C0',
+        'maroon': '#800000',
+        'olive': '#808000',
+        'coral': '#FF7F50',
+        'indigo': '#4B0082',
+        'turquoise': '#40E0D0',
+        'violet': '#EE82EE',
+        'beige': '#F5F5DC',
+        'tan': '#D2B48C',
+        'khaki': '#F0E68C'
+      };
+      
+      // Return the hex code if found, otherwise return a default color
+      return colorMap[colorName.toLowerCase()] || '#6c757d';
+    }
+
+    App.initNavbar();
+
+    function row(item) {
+      const p = item.Product || item.product;
+      const price = Number(item.price || p.price);
+      const variantInfo = [];
+      if (item.size) variantInfo.push(`Size: ${item.size}`);
+      if (item.color) {
+        // Display color with swatch
+        variantInfo.push(`Color: <span class="color-swatch d-inline-block me-1" style="background-color: ${getColorHex(item.color)};" title="${item.color}"></span>${item.color}`);
+      }
+      const variantText = variantInfo.length > 0 ? `<div class="text-muted small">${variantInfo.join(' | ')}</div>` : '';
+      return `<tr>
+        <td><div class="d-flex align-items-center gap-2"><img src="${p.imageURL}" alt="${p.name}" class="rounded thumb-56"><div>${p.name}<div class="text-muted small">${p.category}</div>${variantText}</div></div></td>
+        <td>${UI.fmtPrice(price)}</td>
+        <td><input data-qty="${p.id}" data-size="${item.size || ''}" data-color="${item.color || ''}" type="number" min="1" class="form-control form-control-sm w-100px" value="${item.quantity}"></td>
+        <td>${UI.fmtPrice(price * item.quantity)}</td>
+        <td class="text-end"><button class="btn btn-sm btn-outline-danger" type="button" data-remove="${p.id}" data-size="${item.size || ''}" data-color="${item.color || ''}">Remove</button></td>
+      </tr>`;
+    }
+
+    async function load() {
+      try {
+        const items = await Cart.list();
+        const rows = document.getElementById('rows');
+        rows.innerHTML = items.map(row).join('');
+        rows.querySelectorAll('[data-qty]').forEach(inp => {
+          inp.addEventListener('change', async () => {
+            const id = Number(inp.getAttribute('data-qty'));
+            const size = inp.getAttribute('data-size') || null;
+            const color = inp.getAttribute('data-color') || null;
+            const qty = Number(inp.value);
+            await Cart.update(id, qty, size, color);
+            load();
+          });
+        });
+        rows.querySelectorAll('[data-remove]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = Number(btn.getAttribute('data-remove'));
+            const size = btn.getAttribute('data-size') || null;
+            const color = btn.getAttribute('data-color') || null;
+            await Cart.remove(id, size, color);
+            load();
+          });
+        });
+        document.getElementById('total').textContent = UI.fmtPrice(Cart.total(items));
+      } catch (error) {
+        console.error('Error loading cart:', error);
+        const rows = document.getElementById('rows');
+        rows.innerHTML = '<tr><td colspan="5" class="text-center text-muted">Unable to load cart. Please try refreshing the page.</td></tr>';
+        document.getElementById('total').textContent = '$0.00';
+      }
+    }
+
+    App.initNavbar();
+    load();
+  </script>
+</body>
+</html>

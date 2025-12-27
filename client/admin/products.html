@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Products</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <style>
+    .form-select:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    .category-select:disabled {
+      background-color: #f8f9fa;
+      cursor: not-allowed;
+    }
+    .product-image-preview {
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+    .variant-section {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+    }
+    .image-preview-item {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #dee2e6;
+      transition: all 0.3s ease;
+    }
+    .image-preview-item:hover {
+      border-color: #667eea;
+      transform: scale(1.02);
+    }
+    .image-preview-item img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+    .image-preview-item .remove-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(220, 53, 69, 0.9);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.3s ease;
+    }
+    .image-preview-item .remove-btn:hover {
+      background: rgba(220, 53, 69, 1);
+    }
+    .image-preview-item .main-badge {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background: rgba(25, 135, 84, 0.9);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+    .carousel-item img {
+      height: 400px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+      </a>
+      <div class="collapse navbar-collapse show">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="/admin/index.html">Overview</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/admin/products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/orders.html">Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/categories.html">Categories</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h2>Products</h2>
+      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#modal">Add Product</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>Name</th><th>Category</th><th>Gender</th><th>Price</th><th>Stock</th><th>Variants</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div class="modal" id="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title" id="modalTitle">Product</h5><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        <div class="modal-body">
+          <form id="frm" class="vstack gap-3">
+            <input class="form-control" type="text" name="name" placeholder="Product Name" required>
+
+            <!-- Gender Selection -->
+            <div class="vstack gap-2">
+              <label class="form-label fw-bold">Select Gender *</label>
+              <select class="form-select" name="gender" id="genderSelect" required>
+                <option value="">Choose Gender</option>
+                <option value="men">Men</option>
+                <option value="women">Women</option>
+                <option value="boys">Boys</option>
+                <option value="girls">Girls</option>
+              </select>
+            </div>
+
+            <!-- Dynamic Category Selection -->
+            <div class="vstack gap-2">
+              <label class="form-label fw-bold">Select Category *</label>
+              <select class="form-select category-select" name="category" id="categorySelect" required>
+                <option value="">Select Gender First</option>
+              </select>
+              <div class="form-text">Categories will appear based on selected gender</div>
+            </div>
+
+            <input class="form-control" name="price" type="number" step="0.01" placeholder="0.00" required>
+
+            <!-- Image Upload -->
+            <div class="vstack gap-3">
+              <label class="form-label fw-bold">Product Images</label>
+              <div class="form-text">Add multiple images using URLs or upload files</div>
+
+              <!-- Image URLs Section -->
+              <div class="vstack gap-2">
+                <label class="form-label small">Image URLs (one per line)</label>
+                <textarea class="form-control" name="imageURLs" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg&#10;https://example.com/image3.jpg"></textarea>
+                <div class="form-text">Enter multiple image URLs, one per line</div>
+              </div>
+
+              <!-- File Upload Section -->
+              <div class="vstack gap-2">
+                <label class="form-label small">Upload Images</label>
+                <input class="form-control" type="file" id="imageFiles" accept="image/*" multiple>
+                <div class="form-text">Select multiple image files to upload</div>
+              </div>
+
+              <!-- Image Preview Grid -->
+              <div id="imagePreviewGrid" class="row g-2">
+                <!-- Preview images will be added here -->
+              </div>
+
+              <!-- Main Image Display (for backward compatibility) -->
+              <input type="hidden" name="imageURL" id="mainImageURL">
+            </div>
+
+            <textarea class="form-control" name="description" placeholder="Product Description" rows="3" required></textarea>
+            <input class="form-control" name="stock" type="number" placeholder="Stock Quantity" required>
+
+            <!-- Product Variants -->
+            <div class="variant-section">
+              <h6 class="mb-3">Product Variants</h6>
+
+              <!-- Sizes -->
+              <div class="vstack gap-2 mb-3">
+                <label class="form-label">Sizes (comma separated)</label>
+                <input class="form-control" type="text" name="sizes" placeholder="e.g., S, M, L, XL">
+                <div class="form-text">Enter sizes separated by commas</div>
+              </div>
+
+              <!-- Colors -->
+              <div class="vstack gap-2">
+                <label class="form-label">Colors (comma separated)</label>
+                <input class="form-control" type="text" name="colors" placeholder="e.g., Red, Blue, Black, White">
+                <div class="form-text">Enter colors separated by commas</div>
+              </div>
+            </div>
+
+            <input type="hidden" name="id">
+            <button type="submit" class="d-none">Submit</button>
+          </form>
+        </div>
+        <div class="modal-footer"><button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" type="button" id="btnSave">Save</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Check authentication first
+    const user = App.getUser();
+    console.log('Current user:', user);
+    
+    if (!user) {
+      console.log('No user found, redirecting to login...');
+      window.location.href = '/login.html';
+    } else if (user.role !== 'admin') {
+      console.log('User is not admin:', user.role);
+      alert('Access denied. Admin privileges required.');
+      window.location.href = '/';
+    } else {
+      console.log('Admin user confirmed:', user.email);
+    }
+
+    // Gender-specific categories based on actual website structure
+    const genderCategories = {
+      men: [
+        'Sweat',
+        'T-Shirt',
+        'Jeans',
+        'Jacket',
+        'Shirt',
+        'Polo Shirts',
+        'Accessories & Shoes'
+      ],
+      women: [
+        'Dresses',
+        'Tops & Shirts',
+        'Jackets',
+        'Jeans',
+        'Shorts',
+        'Skirts',
+        'Accessories & Shoes'
+      ],
+      boys: [
+        'Sweaters',
+        'Shirts',
+        'Jackets',
+        'Pants',
+        'Jeans',
+        'Accessories & Shoes'
+      ],
+      girls: [
+        'T-shirts & Graphics',
+        'Dresses',
+        'Jeans',
+        'Pants & Leggings',
+        'Skirts',
+        'Jackets',
+        'Accessories'
+      ]
+    };
+
+    let modal;
+    let productImages = []; // Store multiple images
+    let mainImageIndex = 0; // Track main image index
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      modal = new bootstrap.Modal(document.getElementById('modal'));
+      console.log('Modal initialized:', modal);
+      
+      // Test modal functionality
+      const testModal = () => {
+        console.log('Testing modal...');
+        const modalTitle = document.getElementById('modalTitle');
+        const frm = document.getElementById('frm');
+        
+        if (!modalTitle || !frm) {
+          console.error('Modal elements not found for test');
+          alert('Modal elements not found for test');
+          return;
+        }
+        
+        const nameInput = frm.querySelector('[name="name"]');
+        const genderSelect = frm.querySelector('#genderSelect');
+        const categorySelect = frm.querySelector('#categorySelect');
+        const priceInput = frm.querySelector('[name="price"]');
+        const stockInput = frm.querySelector('[name="stock"]');
+        const descriptionInput = frm.querySelector('[name="description"]');
+        
+        modalTitle.textContent = 'Test Modal';
+        const idInput = frm.querySelector('[name="id"]');
+        idInput.value = '';
+        nameInput.value = 'Test Product';
+        genderSelect.value = 'women';
+        categorySelect.value = 'Dresses';
+        priceInput.value = '29.99';
+        stockInput.value = '10';
+        descriptionInput.value = 'Test description';
+        
+        updateCategoryOptions('women');
+        modal.show();
+        console.log('Test modal should be visible');
+      };
+      
+      // Add test button to console (for debugging)
+      window.testModal = testModal;
+      console.log('Test function available: window.testModal()');
+      
+      // Setup gender change listener
+      const genderSelect = document.getElementById('genderSelect');
+      const categorySelect = document.getElementById('categorySelect');
+      
+      genderSelect.addEventListener('change', () => {
+        const selectedGender = genderSelect.value;
+        updateCategoryOptions(selectedGender);
+      });
+      
+      // Initialize with empty categories
+      updateCategoryOptions('');
+      
+      // Setup image handling
+      setupImageHandlers();
+    });
+
+    function setupImageHandlers() {
+      // Handle URL input with real-time preview
+      const imageURLsTextarea = document.querySelector('textarea[name="imageURLs"]');
+      let typingTimer;
+      
+      imageURLsTextarea.addEventListener('input', function() {
+        // Clear existing timer
+        clearTimeout(typingTimer);
+        
+        // Set a new timer to update preview after user stops typing
+        typingTimer = setTimeout(() => {
+          handleImageURLs();
+        }, 500); // Wait 500ms after user stops typing
+      });
+      
+      // Also handle paste events immediately
+      imageURLsTextarea.addEventListener('paste', function() {
+        setTimeout(() => {
+          handleImageURLs();
+        }, 100); // Short delay for paste to complete
+      });
+      
+      // Handle modal open for new product
+    document.getElementById('modal').addEventListener('show.bs.modal', function (e) {
+      // Check if this is a new product (no editing)
+      const relatedTarget = e.relatedTarget;
+      if (relatedTarget && relatedTarget.getAttribute('data-bs-toggle') === 'modal') {
+        // This is a new product, reset the form completely
+        const frm = document.getElementById('frm');
+        frm.reset();
+        
+        // Explicitly clear price field
+        frm.price.value = '';
+        
+        // Reset image handling
+        productImages = [];
+        mainImageIndex = 0;
+        updateImagePreview();
+        updateMainImageURL();
+        
+        // Reset category dropdown to initial state
+        updateCategoryOptions('');
+        
+        // Clear textarea
+        frm.imageURLs.value = '';
+        
+        console.log('Form reset for new product'); // Debug log
+      }
+    });
+
+    // Handle file upload
+      const imageFilesInput = document.getElementById('imageFiles');
+      imageFilesInput.addEventListener('change', handleImageUpload);
+    }
+
+    function handleImageURLs() {
+      const textarea = document.querySelector('textarea[name="imageURLs"]');
+      const urls = textarea.value.split('\n').filter(url => url.trim());
+      
+      console.log('Raw textarea value:', JSON.stringify(textarea.value)); // Debug raw value
+      console.log('Parsed URLs:', urls); // Debug parsed URLs
+      
+      // Clear existing images
+      productImages = [];
+      
+      // Add URLs to product images
+      urls.forEach((url, index) => {
+        if (url.trim()) {
+          console.log(`Adding URL ${index + 1}:`, url.trim()); // Debug each URL
+          productImages.push({
+            url: url.trim(),
+            type: 'url'
+          });
+        }
+      });
+      
+      console.log('Final product images array:', productImages); // Debug final array
+      
+      updateImagePreview();
+      updateMainImageURL();
+      updateURLsTextarea(); // Keep textarea in sync
+    }
+
+    async function handleImageUpload(event) {
+      const files = Array.from(event.target.files);
+      
+      for (const file of files) {
+        if (file.type.startsWith('image/')) {
+          try {
+            // Upload image
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            const response = await fetch('/api/admin/upload', {
+              method: 'POST',
+              body: formData,
+              headers: { Authorization: `Bearer ${API.auth.getToken()}` }
+            });
+            
+            if (!response.ok) {
+              console.error('Upload failed for file:', file.name);
+              continue;
+            }
+            
+            const data = await response.json();
+            
+            productImages.push({
+              url: data.url,
+              type: 'uploaded',
+              filename: file.name
+            });
+            
+          } catch (error) {
+            console.error('Error uploading file:', file.name, error);
+          }
+        }
+      }
+      
+      updateImagePreview();
+      updateMainImageURL();
+      updateURLsTextarea();
+      
+      // Clear file input
+      event.target.value = '';
+    }
+
+    function updateImagePreview() {
+      const previewGrid = document.getElementById('imagePreviewGrid');
+      previewGrid.innerHTML = '';
+      
+      console.log('Updating preview with images:', productImages.length); // Debug log
+      
+      productImages.forEach((image, index) => {
+        console.log(`Adding image ${index + 1}:`, image.url); // Debug log
+        
+        const previewItem = document.createElement('div');
+        previewItem.className = 'col-md-3 col-6';
+        previewItem.innerHTML = `
+          <div class="image-preview-item">
+            <img src="${image.url}" alt="Product Image ${index + 1}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIEVycm9yPC90ZXh0Pjwvc3ZnPg=='">
+            <button class="remove-btn" onclick="removeImage(${index})" title="Remove image">×</button>
+            ${index === mainImageIndex ? '<div class="main-badge">MAIN</div>' : ''}
+            <button class="btn btn-sm btn-outline-primary position-absolute bottom-0 start-0 m-1" onclick="setMainImage(${index})" title="Set as main image">
+              ${index === mainImageIndex ? '✓' : 'Set Main'}
+            </button>
+          </div>
+        `;
+        previewGrid.appendChild(previewItem);
+      });
+    }
+
+    function removeImage(index) {
+      productImages.splice(index, 1);
+      
+      // Adjust main image index if necessary
+      if (mainImageIndex >= productImages.length) {
+        mainImageIndex = Math.max(0, productImages.length - 1);
+      }
+      
+      updateImagePreview();
+      updateMainImageURL();
+      updateURLsTextarea();
+    }
+
+    function setMainImage(index) {
+      mainImageIndex = index;
+      updateImagePreview();
+      updateMainImageURL();
+    }
+
+    function updateMainImageURL() {
+      const mainImageInput = document.getElementById('mainImageURL');
+      if (productImages.length > 0 && productImages[mainImageIndex]) {
+        mainImageInput.value = productImages[mainImageIndex].url;
+        mainImageInput.required = productImages.length === 0;
+      } else {
+        mainImageInput.value = '';
+        mainImageInput.required = true;
+      }
+    }
+
+    function updateURLsTextarea() {
+      const textarea = document.querySelector('textarea[name="imageURLs"]');
+      const urls = productImages
+        .filter(img => img.type === 'url')
+        .map(img => img.url)
+        .join('\n');
+      textarea.value = urls;
+    }
+
+    function updateCategoryOptions(gender) {
+      const categorySelect = document.getElementById('categorySelect');
+      
+      // Clear existing options
+      categorySelect.innerHTML = '<option value="">Select a Category</option>';
+      
+      if (gender && genderCategories[gender]) {
+        genderCategories[gender].forEach(category => {
+          const option = document.createElement('option');
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+        categorySelect.disabled = false;
+      } else {
+        categorySelect.innerHTML = '<option value="">Select Gender First</option>';
+        categorySelect.disabled = true;
+      }
+    }
+
+    function row(p) {
+      const variants = [];
+      if (p.sizes && p.sizes.length > 0) variants.push(`Sizes: ${p.sizes.join(', ')}`);
+      if (p.colors && p.colors.length > 0) variants.push(`Colors: ${p.colors.join(', ')}`);
+      const variantText = variants.length > 0 ? variants.join(' | ') : 'None';
+      
+      const genderBadge = {
+        'men': '<span class="badge bg-primary">Men</span>',
+        'women': '<span class="badge bg-danger">Women</span>',
+        'boys': '<span class="badge bg-info">Boys</span>',
+        'girls': '<span class="badge bg-warning">Girls</span>'
+      }[p.gender] || '<span class="badge bg-secondary">Unknown</span>';
+      
+      // Handle multiple images - show main image with indicator if multiple
+      const mainImage = p.imageURL || 'https://via.placeholder.com/48x48?text=No+Image';
+      const imageIndicator = (p.images && p.images.length > 1) ? 
+        `<div class="text-muted small">+${p.images.length - 1} more</div>` : '';
+      
+      return `<tr>
+        <td><div class="d-flex align-items-center gap-2">
+          <div class="position-relative">
+            <img src="${mainImage}" style="width:48px;height:48px;object-fit:cover" class="rounded">
+            ${imageIndicator}
+          </div>
+          ${p.name}
+        </div></td>
+        <td>${p.category}</td>
+        <td>${genderBadge}</td>
+        <td>${UI.fmtPrice(p.price)}</td>
+        <td>${p.stock}</td>
+        <td><small class="text-muted">${variantText}</small></td>
+        <td class="text-end">
+          <button class="btn btn-sm btn-outline-secondary" data-edit="${p.id}">Edit</button>
+          <button class="btn btn-sm btn-outline-danger" data-del="${p.id}">Delete</button>
+        </td>
+      </tr>`;
+    }
+
+    async function load() {
+      try {
+        const products = await API.products.list({});
+        console.log('Loaded products for admin:', products.length, 'products');
+        const rows = document.getElementById('rows');
+        rows.innerHTML = products.map(row).join('');
+        
+        // Add event listeners for edit buttons
+        const editButtons = rows.querySelectorAll('[data-edit]');
+        console.log('Found edit buttons:', editButtons.length);
+        editButtons.forEach(btn => {
+          const productId = btn.getAttribute('data-edit');
+          console.log('Adding edit listener for product:', productId);
+          btn.addEventListener('click', () => {
+            console.log('Edit button clicked for product:', productId);
+            openEdit(productId);
+          });
+        });
+        
+        // Add event listeners for delete buttons
+        const deleteButtons = rows.querySelectorAll('[data-del]');
+        console.log('Found delete buttons:', deleteButtons.length);
+        deleteButtons.forEach(btn => {
+          const productId = btn.getAttribute('data-del');
+          console.log('Adding delete listener for product:', productId);
+          btn.addEventListener('click', () => {
+            console.log('Delete button clicked for product:', productId);
+            del(productId);
+          });
+        });
+      } catch (error) {
+        console.error('Error loading products:', error);
+      }
+    }
+
+    async function openEdit(id) {
+      try {
+        console.log('Opening edit for product ID:', id);
+        
+        // First check if modal exists in DOM
+        const modalElement = document.getElementById('modal');
+        if (!modalElement) {
+          console.error('Modal element not found in DOM');
+          alert('Modal not found. Please refresh the page.');
+          return;
+        }
+        
+        // Ensure modal is initialized
+        if (!modal) {
+          console.log('Re-initializing modal...');
+          modal = new bootstrap.Modal(modalElement);
+        }
+        
+        const product = await API.products.get(id);
+        console.log('Raw product data from API:', product); // Debug raw API response
+        
+        if (!product) {
+          alert('Product not found');
+          return;
+        }
+        
+        // Wait a bit for DOM to be ready
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Check if modal elements exist before trying to set them
+        const modalTitle = document.getElementById('modalTitle');
+        const frm = document.getElementById('frm');
+        
+        if (!modalTitle || !frm) {
+          console.error('Modal elements not found:', {
+            modalTitle: !!modalTitle,
+            frm: !!frm,
+            modalElement: !!modalElement
+          });
+          
+          // Debug: Log all modal children
+          if (modalElement) {
+            console.log('Modal element children:', modalElement.innerHTML);
+          }
+          
+          alert('Modal form elements not found. Please refresh the page.');
+          return;
+        }
+        
+        // Use form.querySelector to find elements by name attribute
+        const nameInput = frm.querySelector('[name="name"]');
+        const genderSelect = frm.querySelector('#genderSelect');
+        const categorySelect = frm.querySelector('#categorySelect');
+        const priceInput = frm.querySelector('[name="price"]');
+        const stockInput = frm.querySelector('[name="stock"]');
+        const descriptionInput = frm.querySelector('[name="description"]');
+        
+        console.log('Form elements found:', {
+          nameInput: !!nameInput,
+          genderSelect: !!genderSelect,
+          categorySelect: !!categorySelect,
+          priceInput: !!priceInput,
+          stockInput: !!stockInput,
+          descriptionInput: !!descriptionInput
+        });
+        
+        if (!nameInput || !genderSelect || !categorySelect || !priceInput || !stockInput || !descriptionInput) {
+          console.error('Form input elements not found');
+          
+          // Debug: Log form content
+          if (frm) {
+            console.log('Form HTML:', frm.innerHTML);
+          }
+          
+          alert('Form input elements not found. Please refresh the page.');
+          return;
+        }
+        
+        modalTitle.textContent = 'Edit Product';
+        const idInput = frm.querySelector('[name="id"]');
+        idInput.value = product.id;
+        nameInput.value = product.name || '';
+        genderSelect.value = product.gender || '';
+        categorySelect.value = product.category || '';
+        priceInput.value = product.price || '';
+        stockInput.value = product.stock || '';
+        descriptionInput.value = product.description || '';
+        
+        // Update category options based on selected gender
+        updateCategoryOptions(product.gender || '');
+        
+        // Handle images - check for multiple images first
+        if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+          console.log('Product has multiple images:', product.images);
+          productImages = product.images.map(url => ({ url, type: 'url' }));
+          const mainImageUrl = product.imageURL;
+          mainImageIndex = productImages.findIndex(img => img.url === mainImageUrl);
+          if (mainImageIndex === -1) mainImageIndex = 0;
+          
+          console.log('Loaded productImages:', productImages);
+          console.log('Main image index:', mainImageIndex);
+        } else if (product.imageURL) {
+          console.log('Product has single image:', product.imageURL);
+          // Handle single image (backward compatibility)
+          productImages = [{
+            url: product.imageURL,
+            type: 'url'
+          }];
+          mainImageIndex = 0;
+          console.log('Loaded single image:', productImages);
+        } else {
+          console.log('Product has no images');
+          productImages = [];
+          mainImageIndex = 0;
+        }
+        
+        updateImagePreview();
+        updateMainImageURL();
+        updateURLsTextarea();
+        
+        console.log('About to show modal...');
+        modal.show();
+        console.log('Modal should be visible now');
+      } catch (error) {
+        console.error('Error opening edit modal:', error);
+        alert('Failed to open edit dialog: ' + (error.message || 'Unknown error'));
+      }
+    }
+
+    async function del(id) {
+      if (!confirm('Delete this product?')) return;
+      try {
+        await API.products.remove(id);
+        console.log('Product deleted successfully');
+        load();
+      } catch (error) {
+        console.error('Failed to delete product:', error);
+        alert('Failed to delete product: ' + (error.message || 'Unknown error'));
+      }
+    }
+
+    document.getElementById('btnSave').addEventListener('click', async () => {
+      try {
+        console.log('Save button clicked');
+        
+        // Check if user is authenticated
+        const user = App.getUser();
+        console.log('Current user:', user);
+        if (!user) {
+          alert('Please login first');
+          window.location.href = '/login.html';
+          return;
+        }
+        
+        if (!App.requireAdmin()) {
+          console.log('User is not admin, redirecting...');
+          return;
+        }
+        
+        const frm = document.getElementById('frm');
+        
+        // Check if form is valid
+        if (!frm.checkValidity()) {
+          console.log('Form validation failed');
+          frm.reportValidity();
+          return;
+        }
+        
+        const fd = new FormData(frm);
+        const payload = Object.fromEntries(fd.entries());
+        
+        console.log('Form data:', payload);
+        
+        // Handle sizes and colors - convert comma-separated strings to arrays
+        if (payload.sizes) {
+          payload.sizes = payload.sizes.split(',').map(s => s.trim()).filter(s => s);
+        } else {
+          payload.sizes = [];
+        }
+        
+        if (payload.colors) {
+          payload.colors = payload.colors.split(',').map(c => c.trim()).filter(c => c);
+        } else {
+          payload.colors = [];
+        }
+        
+        // Handle multiple images
+        console.log('productImages before save:', productImages);
+        if (productImages.length > 0) {
+          payload.images = productImages.map(img => img.url);
+          payload.imageURL = productImages[mainImageIndex].url; // Main image
+          console.log('Saving images:', payload.images);
+          console.log('Main image URL:', payload.imageURL);
+        } else {
+          payload.images = [];
+          console.log('No images to save');
+          // No images - this will be caught by validation
+        }
+        
+        // Clean up temporary fields
+        delete payload.imageURLs; // Remove textarea field
+        
+        payload.price = Number(payload.price); 
+        payload.stock = Number(payload.stock);
+        
+        // Validate required fields
+        if (!payload.name || !payload.category || !payload.price || !payload.stock) {
+          alert('Please fill in all required fields');
+          return;
+        }
+        
+        if (!payload.imageURL) {
+          alert('Please add at least one product image');
+          return;
+        }
+        
+        const id = payload.id; 
+        delete payload.id;
+        
+        console.log('Creating product with payload:', payload);
+        
+        if (id) {
+          console.log('Updating existing product:', id);
+          try {
+            await API.products.update(id, payload);
+            console.log('Product updated successfully');
+          } catch (updateError) {
+            if (updateError.message === 'Not found') {
+              alert('Product not found. It may have been deleted. Please refresh the page and try again.');
+              load(); // Refresh the product list
+              return;
+            }
+            throw updateError;
+          }
+        } else {
+          console.log('Creating new product');
+          await API.products.create(payload);
+          console.log('Product created successfully');
+        }
+        
+        modal.hide();
+        frm.reset();
+        
+        // Reset image handling
+        productImages = [];
+        mainImageIndex = 0;
+        updateImagePreview();
+        updateMainImageURL();
+        
+        // Reset category dropdown to initial state
+        updateCategoryOptions('');
+        
+        load();
+        
+      } catch (error) {
+        console.error('Error saving product:', error);
+        console.error('Full error details:', error);
+        alert('Failed to save product: ' + (error.message || 'Unknown error'));
+      }
+    });
+
+    load();
+  </script>
+</body>
+</html>

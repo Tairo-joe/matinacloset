@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Categories</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+      </a>
+      <div class="collapse navbar-collapse show">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="/admin/index.html">Overview</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="/admin/orders.html">Orders</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/admin/categories.html">Categories</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h2>Categories</h2>
+      <div class="d-flex gap-2">
+        <select id="old" class="form-select"></select>
+        <input id="next" type="text" class="form-control" placeholder="New name">
+        <button id="btnRename" type="button" class="btn btn-primary">Rename</button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead><tr><th>Category</th><th>Products</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script>
+    if (!App.requireAdmin()) throw new Error('Not admin');
+
+    function row(r) { return `<tr><td>${r.category}</td><td>${r.count}</td></tr>`; }
+
+    async function load() {
+      const cats = await API.admin.categories();
+      const rows = document.getElementById('rows');
+      rows.innerHTML = cats.map(row).join('');
+      const sel = document.getElementById('old');
+      sel.innerHTML = cats.map(c => `<option value="${c.category}">${c.category}</option>`).join('');
+    }
+
+    document.getElementById('btnRename').addEventListener('click', async () => {
+      const oldName = document.getElementById('old').value;
+      const nextName = document.getElementById('next').value.trim();
+      if (!nextName) return alert('Enter a new name');
+      await API.admin.renameCategory(oldName, nextName);
+      document.getElementById('next').value = '';
+      load();
+    });
+
+    load();
+  </script>
+</body>
+</html>

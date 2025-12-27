@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MatinaCloset — Success</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <style>
+    body {
+      padding-top: 65px !important;
+    }
+    .success-icon {
+      font-size: 4rem;
+    }
+    .navbar {
+      padding: 0.5rem 1.5rem !important;
+      min-height: 60px !important;
+      height: 60px !important;
+      border-bottom: 1px solid #e5e7eb !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .navbar-brand img {
+      width: 35px !important;
+      height: 35px !important;
+      max-height: 40px !important;
+    }
+    .navbar-container {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+    .navbar-left {
+      flex: 0 0 auto !important;
+    }
+    .navbar-center {
+      flex: 1 1 auto !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+    }
+    .navbar-right {
+      flex: 0 0 auto !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .navbar-nav {
+      display: flex !important;
+      align-items: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .navbar-nav .nav-link {
+      padding: 0.25rem 0.75rem !important;
+      font-size: 0.875rem !important;
+      font-weight: 500 !important;
+      color: #374151 !important;
+      display: flex !important;
+      align-items: center !important;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #111827 !important;
+    }
+    .navbar-collapse {
+      flex-basis: 100% !important;
+      align-items: center !important;
+    }
+    .navbar-toggler {
+      border: none !important;
+      padding: 0.25rem !important;
+      font-size: 1rem !important;
+    }
+    #navbarAuth {
+      display: flex !important;
+      align-items: center !important;
+    }
+    #navbarAuth .btn {
+      padding: 0.15rem 0.4rem !important;
+      font-size: 0.75rem !important;
+      border-radius: 0.25rem !important;
+      max-height: 25px !important;
+      line-height: 1.2 !important;
+    }
+    #navbarAuth .dropdown-menu {
+      font-size: 0.8rem !important;
+      min-width: 120px !important;
+      border: 1px solid #e5e7eb !important;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    }
+    #navbarAuth .dropdown-item {
+      padding: 0.5rem 0.75rem !important;
+      font-size: 0.8rem !important;
+    }
+    .icon-bag {
+      width: 18px !important;
+      height: 18px !important;
+      max-height: 18px !important;
+    }
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0.5rem 1rem !important;
+        min-height: 55px !important;
+        height: 55px !important;
+      }
+      .navbar-container {
+        flex-direction: column !important;
+      }
+      .navbar-collapse {
+        flex-direction: column !important;
+        width: 100% !important;
+      }
+      .navbar-center {
+        order: -1 !important;
+        width: 100% !important;
+        justify-content: flex-start !important;
+        margin-top: 0.5rem !important;
+      }
+      .navbar-nav {
+        background: white !important;
+        padding: 1rem 0 !important;
+        border-top: 1px solid #e5e7eb !important;
+        width: 100% !important;
+        flex-direction: column !important;
+      }
+      .navbar-nav .nav-link {
+        text-align: center !important;
+        padding: 0.5rem !important;
+      }
+      .navbar-right {
+        margin-top: 1rem !important;
+        width: 100% !important;
+        justify-content: center !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top bg-light">
+    <div class="container">
+      <div class="navbar-container">
+        <!-- Left Section: Logo -->
+        <div class="navbar-left">
+          <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="35" height="35">
+          </a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Center Section: Menu Items + Cart Icon -->
+        <div class="navbar-center">
+          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav">
+              <li class="nav-item"><a class="nav-link" href="/men.html">Men</a></li>
+              <li class="nav-item"><a class="nav-link" href="/women.html">Women</a></li>
+              <li class="nav-item"><a class="nav-link" href="/boys.html">Boys</a></li>
+              <li class="nav-item"><a class="nav-link" href="/girls.html">Girls</a></li>
+              <li class="nav-item">
+                <a href="/cart.html" class="nav-link">
+                  <img src="https://th.bing.com/th?q=Shopping+Mall+Bag+Logo&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.5&pid=InlineBlock&rm=3&mkt=en-SG&cc=SG&setlang=en&adlt=strict&t=1&mw=247" alt="Bag" class="icon-bag">
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right Section: Empty (removed user profile) -->
+        <div class="navbar-right">
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body text-center p-5">
+            <div class="mb-4">
+              <i class="bi bi-check-circle-fill text-success success-icon"></i>
+            </div>
+            <h2 class="mb-3">Thank you for your purchase!</h2>
+            <p class="text-muted mb-4">Your order was placed successfully.</p>
+
+            <div id="orderDetails" class="mb-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Loading order details...</p>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+              <a href="/" class="btn btn-outline-primary">Continue Shopping</a>
+              <a href="/account.html" class="btn btn-primary">View My Orders</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script>
+    App.initNavbar();
+    
+    // Get order ID from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('orderId');
+    
+    console.log('🔍 Checkout Success Page Debug:');
+    console.log('📍 Full URL:', window.location.href);
+    console.log('🔑 Order ID from URL:', orderId);
+    console.log('🔍 URL Parameters:', Array.from(urlParams.entries()));
+    
+    // Load order details
+    async function loadOrderDetails() {
+      const orderDetailsDiv = document.getElementById('orderDetails');
+      
+      if (!orderId) {
+        console.log('❌ No order ID found in URL');
+        orderDetailsDiv.innerHTML = `
+          <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Order ID not found. You can view your orders in your account.
+            <div class="mt-2">
+              <small class="text-muted">URL: ${window.location.href}</small>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      try {
+        console.log('🔄 Loading order details for order ID:', orderId);
+        
+        // Show loading state
+        orderDetailsDiv.innerHTML = `
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Loading order details for order #${orderId}...</p>
+        `;
+        
+        // Check if API is available
+        console.log('🔍 Checking API object:', typeof API);
+        console.log('🔍 API.orders:', typeof API?.orders);
+        console.log('🔍 API.orders.mine:', typeof API?.orders?.mine);
+        
+        if (!API || !API.orders || !API.orders.mine) {
+          throw new Error('API.orders.mine not available');
+        }
+        
+        // Get order details
+        const orderData = await API.orders.mine();
+        console.log('📊 Orders data received:', orderData);
+        
+        const order = orderData.find(o => o.id == orderId || o.orderId == orderId);
+        console.log('🎯 Found order:', order);
+        
+        if (order) {
+          orderDetailsDiv.innerHTML = `
+            <div class="alert alert-success">
+              <h5 class="alert-heading">Order Confirmed!</h5>
+              <p class="mb-2"><strong>Order ID:</strong> #${order.id || orderId}</p>
+              <p class="mb-2"><strong>Total Amount:</strong> ${UI.fmtPrice(order.totalPrice || order.total || 0)}</p>
+              <p class="mb-0"><strong>Status:</strong> <span class="badge bg-warning">${order.status || 'pending'}</span></p>
+            </div>
+            <div class="text-muted small">
+              You will receive an email confirmation shortly with your order details.
+            </div>
+          `;
+        } else {
+          console.log('⚠️ Order not found in order data, showing success message');
+          orderDetailsDiv.innerHTML = `
+            <div class="alert alert-success">
+              <h5 class="alert-heading">Order Placed Successfully!</h5>
+              <p class="mb-2"><strong>Order ID:</strong> #${orderId}</p>
+              <p class="mb-0">Your order has been received and is being processed.</p>
+            </div>
+            <div class="text-muted small">
+              Check your account for full order details and tracking information.
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('❌ Error loading order details:', error);
+        console.error('❌ Error details:', error.message);
+        orderDetailsDiv.innerHTML = `
+          <div class="alert alert-success">
+            <h5 class="alert-heading">Order Placed Successfully!</h5>
+            <p class="mb-2"><strong>Order ID:</strong> #${orderId}</p>
+            <p class="mb-0">Your order has been received and is being processed.</p>
+          </div>
+          <div class="text-muted small">
+            Check your account for full order details and tracking information.
+          </div>
+          <div class="mt-2">
+            <small class="text-muted">Error: ${error.message}</small>
+          </div>
+        `;
+      }
+    }
+    
+    // Load order details when page loads
+    loadOrderDetails();
+  </script>
+
+  <footer class="bg-light text-center py-3 mt-5">
+    <div class="container">
+      <p class="mb-0 small text-muted">
+        © 2025 MatinaCloset | Powered by <a href="https://isaac-nelson.vercel.app/" target="_blank" class="text-decoration-none">Isaac Nelson</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

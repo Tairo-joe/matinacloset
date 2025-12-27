@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MatinaCloset — Girls' Dresses</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <style>
+    .category-header {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      color: white;
+      padding: 4rem 0;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .category-header.hero {
+      background-image: url('https://www1.assets-gap.com/webcontent/0059/893/206/cn59893206.jpg?q=h&w=520');
+      background-size: cover;
+      background-position: top center;
+      padding: 8rem 0;
+    }
+    .category-header .container {
+      position: relative;
+      z-index: 2;
+    }
+    .category-header .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 1;
+    }
+    .icon-logout {
+      width: 24px;
+      height: 24px;
+    }
+    .icon-bag {
+      width: 24px;
+      height: 24px;
+    }
+    .navbar {
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important;
+    }
+    .navbar-brand img {
+      width: 45px !important;
+      height: 45px !important;
+    }
+    .navbar-nav .nav-link {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+    body {
+      padding-top: 70px !important;
+    }
+    .product-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    .badge-category {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="/men.html">Men</a></li>
+          <li class="nav-item"><a class="nav-link" href="/women.html">Women</a></li>
+          <li class="nav-item"><a class="nav-link" href="/boys.html">Boys</a></li>
+          <li class="nav-item"><a class="nav-link" href="/girls.html">Girls</a></li>
+          <li class="nav-item"><a class="nav-link" href="/cart.html"><img src="https://th.bing.com/th?q=Shopping+Mall+Bag+Logo&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.5&pid=InlineBlock&rm=3&mkt=en-SG&cc=SG&setlang=en&adlt=strict&t=1&mw=247" alt="Bag" class="icon-bag"></a></li>
+        </ul>
+        <div id="navbarAuth" class="d-flex"></div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="category-header hero">
+    <div class="container text-center">
+      <h1 class="display-4 fw-bold text-white">Girls' Dresses</h1>
+      <p class="lead text-white">Discover our beautiful collection of girls' dresses for every occasion</p>
+    </div>
+    <div class="overlay"></div>
+  </div>
+
+  <main class="container">
+    <div class="row mb-3 g-2 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Type</label>
+        <select id="filterType" class="form-select">
+          <option value="">All Types</option>
+          <option value="casual">Casual Dresses</option>
+          <option value="formal">Formal Dresses</option>
+          <option value="party">Party Dresses</option>
+          <option value="summer">Summer Dresses</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Size</label>
+        <select id="filterSize" class="form-select">
+          <option value="">All Sizes</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Min Price</label>
+        <input id="filterMinPrice" type="number" class="form-control" placeholder="0">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Max Price</label>
+        <input id="filterMaxPrice" type="number" class="form-control" placeholder="999">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Search</label>
+        <input id="filterSearch" type="text" class="form-control" placeholder="Search dresses...">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <button id="btnApply" type="button" class="btn btn-primary">Apply Filters</button>
+        <button id="btnClear" type="button" class="btn btn-outline-secondary ms-2">Clear</button>
+      </div>
+    </div>
+
+    <div id="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-2">Loading girls' dresses...</p>
+    </div>
+
+    <div id="productGrid" class="row g-4"></div>
+    <div id="noProducts" class="text-center py-5 d-none">
+      <h3>No dresses found</h3>
+      <p class="text-muted">Try adjusting your filters or browse other categories.</p>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script>
+    App.initNavbar();
+    
+    let allProducts = [];
+
+    async function loadProducts() {
+      const loading = document.getElementById('loading');
+      const grid = document.getElementById('productGrid');
+      const noProducts = document.getElementById('noProducts');
+      
+      loading.classList.remove('d-none');
+      grid.classList.add('d-none');
+      noProducts.classList.add('d-none');
+
+      try {
+        // Add cache-busting and case-insensitive category matching
+        const timestamp = Date.now();
+        const products = await API.products.list({ gender: 'girls', category: 'Dresses', _t: timestamp });
+        allProducts = products;
+        
+        console.log('Loaded girls dresses products:', products.length, 'products');
+        console.log('Products details:', products.map(p => ({ id: p.id, name: p.name, category: p.category, gender: p.gender })));
+        
+        renderProducts(products);
+        
+        loading.classList.add('d-none');
+        grid.classList.remove('d-none');
+      } catch (error) {
+        console.error('Error loading products:', error);
+        loading.classList.add('d-none');
+        noProducts.classList.remove('d-none');
+      }
+    }
+
+    function renderProducts(products) {
+      const grid = document.getElementById('productGrid');
+      const noProducts = document.getElementById('noProducts');
+      
+      if (products.length === 0) {
+        grid.classList.add('d-none');
+        noProducts.classList.remove('d-none');
+        return;
+      }
+      
+      grid.innerHTML = products.map(p => {
+        const sizes = p.sizes ? Object.keys(p.sizes).filter(s => p.sizes[s] > 0).join(', ') : '';
+        const colors = p.colors ? p.colors.map(c => `<span class="color-swatch" style="background-color: ${getColorHex(c)};" title="${c}"></span>`).join('') : '';
+        const rating = p.avgRating ? p.avgRating.toFixed(1) : '0.0';
+        
+        // Handle multiple images - show main image with indicator
+        const mainImage = p.imageURL || 'https://via.placeholder.com/250x250?text=No+Image';
+        const hasMultipleImages = p.images && p.images.length > 1;
+        const imageIndicator = hasMultipleImages ? 
+          `<div class="position-absolute top-0 start-0 m-2">
+            <div class="badge bg-dark">
+              <i class="bi bi-images"></i> ${p.images.length} photos
+            </div>
+          </div>` : '';
+        
+        return `
+        <div class="col-md-6 col-lg-4 col-xl-3">
+          <div class="card product-card h-100">
+            <div class="position-relative">
+              <img src="${mainImage}" class="card-img-top" alt="${p.name}" style="height: 250px; object-fit: cover;">
+              ${imageIndicator}
+              <span class="badge-category position-absolute top-0 end-0 m-2">Dresses</span>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">${p.name}</h5>
+              <div class="mb-1">
+                <span class="rating">${UI.stars(p.avgRating)}</span>
+                <small class="text-muted">${rating} (${p.reviewCount||0})</small>
+              </div>
+              <div class="fw-bold mb-2">${UI.fmtPrice(p.price)}</div>
+              ${sizes ? `<div class="mb-1"><small class="text-muted">Sizes: ${sizes}</small></div>` : ''}
+              ${colors ? `<div class="mb-2">${colors}</div>` : ''}
+              <div class="mt-auto d-flex gap-2">
+                <a class="btn btn-sm btn-outline-secondary" href="/product.html?id=${p.id}">Details</a>
+                <button class="btn btn-sm btn-primary" data-add="${p.id}">Add to bag</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+      // Add event listeners to "Add to bag" buttons
+      document.querySelectorAll('[data-add]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.dataset.add;
+          const token = API.auth.getToken();
+          
+          if (token) {
+            try {
+              await API.cart.add(id, 1);
+              UI.toast('Added to bag');
+            } catch (error) {
+              console.error('Error adding to bag:', error);
+              UI.toast('Failed to add to bag: ' + error.message);
+            }
+          } else {
+            UI.toast('Please log in or create an account to add items to bag');
+            location.href = '/login.html';
+          }
+        });
+      });
+    }
+
+    // Helper function to get hex color from color name
+    function getColorHex(colorName) {
+      const colors = {
+        'red': '#FF0000', 'Red': '#FF0000', 'RED': '#FF0000',
+        'blue': '#0000FF', 'Blue': '#0000FF', 'BLUE': '#0000FF',
+        'green': '#00FF00', 'Green': '#00FF00', 'GREEN': '#00FF00',
+        'black': '#000000', 'Black': '#000000', 'BLACK': '#000000',
+        'white': '#FFFFFF', 'White': '#FFFFFF', 'WHITE': '#FFFFFF',
+        'yellow': '#FFFF00', 'Yellow': '#FFFF00', 'YELLOW': '#FFFF00',
+        'purple': '#800080', 'Purple': '#800080', 'PURPLE': '#800080',
+        'pink': '#FFC0CB', 'Pink': '#FFC0CB', 'PINK': '#FFC0CB',
+        'orange': '#FFA500', 'Orange': '#FFA500', 'ORANGE': '#FFA500',
+        'brown': '#A52A2A', 'Brown': '#A52A2A', 'BROWN': '#A52A2A',
+        'gray': '#808080', 'Gray': '#808080', 'GRAY': '#808080',
+        'grey': '#808080', 'Grey': '#808080', 'GREY': '#808080'
+      };
+      return colors[colorName] || '#CCCCCC';
+    }
+
+    function filterProducts() {
+      const type = document.getElementById('filterType').value;
+      const size = document.getElementById('filterSize').value;
+      const minPrice = parseFloat(document.getElementById('filterMinPrice').value) || 0;
+      const maxPrice = parseFloat(document.getElementById('filterMaxPrice').value) || Infinity;
+      const search = document.getElementById('filterSearch').value.toLowerCase();
+
+      const filtered = allProducts.filter(p => {
+        const typeMatch = !type || p.name.toLowerCase().includes(type);
+        const sizeMatch = !size || (p.sizes && p.sizes[size] > 0);
+        const priceMatch = p.price >= minPrice && p.price <= maxPrice;
+        const searchMatch = !search || p.name.toLowerCase().includes(search);
+        
+        return typeMatch && sizeMatch && priceMatch && searchMatch;
+      });
+
+      renderProducts(filtered);
+    }
+
+    document.getElementById('btnApply').addEventListener('click', filterProducts);
+    document.getElementById('btnClear').addEventListener('click', () => {
+      document.getElementById('filterType').value = '';
+      document.getElementById('filterSize').value = '';
+      document.getElementById('filterMinPrice').value = '';
+      document.getElementById('filterMaxPrice').value = '';
+      document.getElementById('filterSearch').value = '';
+      renderProducts(allProducts);
+    });
+    document.getElementById('filterSearch').addEventListener('keydown', e => { if (e.key === 'Enter') filterProducts(); });
+
+    loadProducts();
+  </script>
+</body>
+</html>

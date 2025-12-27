@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MatinaCloset — Product</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/assets/css/styles.css" rel="stylesheet">
+  <style>
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #dee2e6;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-block;
+    }
+    .color-swatch:hover {
+      transform: scale(1.1);
+      border-color: #007bff;
+    }
+    .btn-check:checked + .color-swatch {
+      border-color: #007bff;
+      border-width: 3px;
+      transform: scale(1.1);
+    }
+    .icon-logout {
+      width: 24px;
+      height: 24px;
+    }
+    .icon-bag {
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+      </a>
+      <div class="collapse navbar-collapse show">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="/cart.html"><img src="https://th.bing.com/th?q=Shopping+Mall+Bag+Logo&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.5&pid=InlineBlock&rm=3&mkt=en-SG&cc=SG&setlang=en&adlt=strict&t=1&mw=247" alt="Bag" class="icon-bag"></a></li>
+        </ul>
+        <div id="navbarAuth" class="d-flex"></div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div id="content" class="row g-4"></div>
+    <div class="mt-4">
+      <h5>Reviews</h5>
+      <div id="reviews"></div>
+      <div id="reviewForm" class="mt-3"></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/cart.js"></script>
+  <script>
+    // Function to convert color names to hex codes
+    function getColorHex(colorName) {
+      const colorMap = {
+        'red': '#FF0000',
+        'blue': '#0000FF',
+        'black': '#000000',
+        'white': '#FFFFFF',
+        'green': '#008000',
+        'yellow': '#FFFF00',
+        'orange': '#FFA500',
+        'purple': '#800080',
+        'pink': '#FFC0CB',
+        'brown': '#A52A2A',
+        'gray': '#808080',
+        'grey': '#808080',
+        'navy': '#000080',
+        'teal': '#008080',
+        'lime': '#00FF00',
+        'cyan': '#00FFFF',
+        'magenta': '#FF00FF',
+        'gold': '#FFD700',
+        'silver': '#C0C0C0',
+        'maroon': '#800000',
+        'olive': '#808000',
+        'coral': '#FF7F50',
+        'indigo': '#4B0082',
+        'turquoise': '#40E0D0',
+        'violet': '#EE82EE',
+        'beige': '#F5F5DC',
+        'tan': '#D2B48C',
+        'khaki': '#F0E68C'
+      };
+      
+      // Return the hex code if found, otherwise return a default color
+      return colorMap[colorName.toLowerCase()] || '#6c757d';
+    }
+
+    App.initNavbar();
+
+    const params = new URLSearchParams(location.search);
+    const id = Number(params.get('id'));
+
+    async function load() {
+      const p = await API.products.get(id);
+      const content = document.getElementById('content');
+      
+      // Handle multiple images for carousel
+      const images = p.images && p.images.length > 0 ? p.images : [p.imageURL];
+      
+      content.innerHTML = `
+        <div class="col-12 col-lg-6">
+          ${images.length > 1 ? `
+          <!-- Product Carousel -->
+          <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+            <div class="carousel-indicators">
+              ${images.map((_, index) => `
+                <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="${index}" ${index === 0 ? 'class="active"' : ''} aria-label="Slide ${index + 1}"></button>
+              `).join('')}
+            </div>
+            <div class="carousel-inner">
+              ${images.map((image, index) => `
+                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                  <img src="${image}" class="d-block w-100 img-fluid rounded" alt="${p.name} - Image ${index + 1}" style="height: 400px; object-fit: cover;">
+                </div>
+              `).join('')}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev" aria-label="Previous slide">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next" aria-label="Next slide">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+          ` : `
+          <!-- Single Image -->
+          <img class="img-fluid rounded" src="${p.imageURL}" alt="${p.name}">
+          `}
+        </div>
+        <div class="col-12 col-lg-6">
+          <h2>${p.name}</h2>
+          <div class="mb-2 d-flex align-items-center gap-2"><span class="rating">${UI.stars(p.avgRating)}</span><small class="text-muted">${Number(p.avgRating||0).toFixed(1)} (${p.reviewCount||0})</small></div>
+          <div class="fs-4 fw-bold mb-2">${UI.fmtPrice(p.price)}</div>
+          <p>${p.description}</p>
+          ${p.sizes && p.sizes.length > 0 ? `
+          <div class="mb-3">
+            <label class="form-label">Size:</label>
+            <div class="d-flex gap-2">
+              ${p.sizes.map(size => `
+                <input type="radio" class="btn-check" name="size" id="size-${size}" value="${size}" ${size === p.sizes[0] ? 'checked' : ''}>
+                <label class="btn btn-outline-primary" for="size-${size}">${size}</label>
+              `).join('')}
+            </div>
+          </div>
+          ` : ''}
+          ${p.colors ? `
+          <div class="mb-3">
+            <label class="form-label">Color:</label>
+            <div class="d-flex gap-2 align-items-center">
+              ${(() => {
+                let colorArray = [];
+                if (typeof p.colors === 'string') {
+                  colorArray = p.colors.split(',').map(c => c.trim()).filter(c => c);
+                } else if (Array.isArray(p.colors)) {
+                  colorArray = p.colors;
+                }
+                
+                return colorArray.map((color, index) => `
+                  <input type="radio" class="btn-check" name="color" id="color-${color}" value="${color}" ${index === 0 ? 'checked' : ''}>
+                  <label class="color-swatch" for="color-${color}" style="background-color: ${getColorHex(color)};" title="${color}"></label>
+                `).join('');
+              })()}
+            </div>
+          </div>
+          ` : ''}
+          <div class="d-flex gap-2">
+            <input id="qty" type="number" class="form-control w-100px" value="1" min="1">
+            <button id="btnAdd" type="button" class="btn btn-primary" data-add>Add to bag</button>
+          </div>
+        </div>`;
+      
+      // Initialize carousel if multiple images
+      if (images.length > 1) {
+        setTimeout(() => {
+          const carouselElement = document.getElementById('productCarousel');
+          if (carouselElement) {
+            const carousel = new bootstrap.Carousel(carouselElement, {
+              interval: 4000,
+              ride: 'carousel'
+            });
+            console.log('Carousel initialized with', images.length, 'images');
+          }
+        }, 100);
+      }
+      
+      document.querySelector('[data-add]').addEventListener('click', async () => {
+        const q = Number(document.getElementById('qty').value || 1);
+        const selectedSize = document.querySelector('input[name="size"]:checked')?.value || null;
+        const selectedColor = document.querySelector('input[name="color"]:checked')?.value || null;
+        
+        console.log(`🖱️ Product page add to bag clicked: Qty ${q}, Size ${selectedSize}, Color ${selectedColor}`);
+        
+        // Validate quantity
+        if (!q || q <= 0) {
+          console.error('❌ Invalid quantity:', q);
+          UI.toast('Invalid quantity - please enter a valid number');
+          return;
+        }
+        
+        const token = API.auth.getToken();
+        console.log('🔑 Authentication token:', token ? 'Present' : 'Missing');
+        
+        if (token) {
+          try {
+            console.log('📤 Sending API request to add product to cart...');
+            const result = await API.cart.add(id, q, selectedSize, selectedColor);
+            console.log('✅ Cart API response:', result);
+            UI.toast('Added to bag');
+          } catch (error) {
+            console.error('❌ Error adding to cart:', error);
+            console.error('❌ Full error details:', error.message);
+            UI.toast('Failed to add to bag: ' + error.message);
+          }
+        } else {
+          console.log('🔒 User not authenticated - redirecting to login');
+          UI.toast('Please log in or create an account to add items to bag');
+          location.href = '/login.html';
+          return;
+        }
+      });
+      await loadReviews();
+      renderReviewForm();
+    }
+
+    async function loadReviews() {
+      const list = await API.products.reviews(id);
+      const wrap = document.getElementById('reviews');
+      if (!list.length) { wrap.innerHTML = '<p class="text-muted">No reviews yet.</p>'; return; }
+      wrap.innerHTML = list.map(r => `
+        <div class="border rounded p-2 mb-2">
+          <div class="d-flex justify-content-between"><strong>${r.User?.name||'User'}</strong><span class="rating">${UI.stars(r.rating)}</span></div>
+          ${r.comment ? `<div class="text-muted small mt-1">${r.comment}</div>` : ''}
+        </div>`).join('');
+    }
+
+    function renderReviewForm() {
+      const token = API.auth.getToken();
+      const el = document.getElementById('reviewForm');
+      if (!token) { el.innerHTML = '<a class="btn btn-outline-primary" href="/login.html">Login to write a review</a>'; return; }
+      el.innerHTML = `
+        <form id="frmReview" class="row g-2">
+          <div class="col-12 col-md-2"><select id="rating" class="form-select">
+            <option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+          </select></div>
+          <div class="col"><input id="comment" class="form-control" placeholder="Write a comment (optional)"></div>
+          <div class="col-auto"><button class="btn btn-success" type="submit">Submit</button></div>
+        </form>`;
+      document.getElementById('frmReview').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const rating = Number(document.getElementById('rating').value);
+        const comment = document.getElementById('comment').value;
+        await API.reviews.add(id, { rating, comment });
+        await loadReviews();
+        UI.toast('Review saved');
+      });
+    }
+
+    App.initNavbar();
+    load();
+  </script>
+  
+  <footer class="bg-light text-center py-3 mt-5">
+    <div class="container">
+      <p class="mb-0 small text-muted">
+        © 2025 MatinaCloset | Powered by <a href="https://isaac-nelson.vercel.app/" target="_blank" class="text-decoration-none">Isaac Nelson</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
