@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MatinaCloset — Shop</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="/assets/css/styles.css" rel="stylesheet">
@@ -246,6 +247,49 @@
   <script>
     App.initNavbar();
 
+    // Handle mobile navbar to prevent content overlap
+    document.addEventListener('DOMContentLoaded', function() {
+      const navbar = document.querySelector('.navbar');
+      const navbarCollapse = document.querySelector('.navbar-collapse');
+      const navbarToggler = document.querySelector('.navbar-toggler');
+      
+      if (navbarCollapse && navbarToggler) {
+        // Show/hide menu without covering content
+        navbarToggler.addEventListener('click', function() {
+          if (navbarCollapse.classList.contains('show')) {
+            // Menu closing
+            document.body.classList.remove('navbar-open');
+            navbarCollapse.style.display = 'none';
+            setTimeout(() => {
+              navbarCollapse.classList.remove('show');
+              navbarCollapse.style.display = '';
+            }, 300);
+          } else {
+            // Menu opening
+            document.body.classList.add('navbar-open');
+            navbarCollapse.style.display = 'block';
+            setTimeout(() => {
+              navbarCollapse.classList.add('show');
+            }, 10);
+          }
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!navbar.contains(e.target) && navbarCollapse.classList.contains('show')) {
+            navbarToggler.click();
+          }
+        });
+        
+        // Close menu on escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && navbarCollapse.classList.contains('show')) {
+            navbarToggler.click();
+          }
+        });
+      }
+    });
+
     async function loadCategories() {
       const cats = await API.products.categories();
       const sel = document.getElementById('filterCategory');
@@ -440,47 +484,32 @@
   </script>
 
 <!-- FOOTER -->
-<footer class="bg-dark text-white py-5 mt-5" aria-label="Footer">
+<footer class="bg-dark text-white py-3 mt-5" aria-label="Footer">
   <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
       <!-- About Us -->
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-lg-6 col-md-12 mb-4 text-center">
         <h5 class="mb-3">About Us</h5>
         <p class="mb-3">MatinaCloset brings you modern fashion for men, women, and kids — carefully selected for comfort, quality, and style.</p>
-        <div class="d-flex gap-3">
+        <div class="d-flex gap-3 justify-content-center">
           <a href="https://instagram.com/matinasclosetgh" class="text-white"><i class="fab fa-instagram"></i> Instagram</a>
         </div>
       </div>
 
       <!-- Contact Info -->
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-lg-6 col-md-12 mb-4 text-center">
         <h5 class="mb-3">Contact Info</h5>
         <p class="mb-2"><i class="fas fa-envelope"></i> info@matinacloset.com</p>
         <p class="mb-2"><i class="fas fa-phone"></i> 0508127245</p>
         <p class="mb-2"><i class="fas fa-map-marker-alt"></i> Accra, Ghana</p>
       </div>
-
-      <!-- Legal & Policies -->
-      <div class="col-lg-4 col-md-12 mb-4">
-        <h5 class="mb-3">Policies</h5>
-        <div class="row">
-          <div class="col-6">
-            <p class="mb-2"><a href="#" class="text-white text-decoration-none">Delivery Policy</a></p>
-            <p class="mb-2"><a href="#" class="text-white text-decoration-none">Returns Policy</a></p>
-          </div>
-          <div class="col-6">
-            <p class="mb-2"><a href="#" class="text-white text-decoration-none">Privacy Policy</a></p>
-            <p class="mb-2"><a href="#" class="text-white text-decoration-none">Terms &amp; Conditions</a></p>
-          </div>
-        </div>
-      </div>
     </div>
 
     <hr class="my-4 bg-white">
 
-    <div class="container">
-      <p class="mb-0 small text-muted">
-        © 2025 MatinaCloset | Powered by <a href="https://isaac-nelson.vercel.app/" target="_blank" class="text-decoration-none">Isaac Nelson</a>
+    <div class="container text-center">
+      <p class="mb-0 small text-white">
+        © 2025 MatinaCloset | Powered by <a href="https://isaac-nelson.vercel.app/" target="_blank" class="text-info text-decoration-none">Isaac Nelson</a>
       </p>
     </div>
   </div>

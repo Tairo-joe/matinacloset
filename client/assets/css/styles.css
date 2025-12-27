@@ -34,6 +34,51 @@ main.container {
     font-size: 1rem;
   }
   
+  /* Improved mobile menu that doesn't cover content */
+  .navbar-collapse {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background: white;
+    border-bottom: 1px solid #dee2e6;
+    max-height: calc(100vh - 50px);
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .navbar-collapse.collapsing {
+    transition: none;
+  }
+  
+  .navbar-collapse.show {
+    display: block !important;
+  }
+  
+  .navbar-nav {
+    padding: 1rem 0;
+  }
+  
+  .navbar-nav .nav-item {
+    border-bottom: 1px solid #f8f9fa;
+  }
+  
+  .navbar-nav .nav-link {
+    padding: 1rem 1.5rem !important;
+    color: #212529 !important;
+    font-weight: 500;
+  }
+  
+  .navbar-nav .nav-link:hover {
+    background-color: #f8f9fa;
+  }
+  
+  /* Push content down when menu is open */
+  body.navbar-open {
+    padding-top: calc(50px + 200px); /* Adjust based on menu height */
+  }
+  
   main.container {
     padding-left: 10px;
     padding-right: 10px;
