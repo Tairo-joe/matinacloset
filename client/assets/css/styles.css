@@ -141,6 +141,33 @@ main.container .row.g-2.align-items-end {
   }
 }
 
+/* Mobile table fix */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .table {
+    font-size: 0.9rem;
+    min-width: 600px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
+  
+  .table th:nth-child(2),
+  .table th:nth-child(3),
+  .table th:nth-child(4),
+  .table td:nth-child(2),
+  .table td:nth-child(3),
+  .table td:nth-child(4) {
+    display: table-cell;
+  }
+}
+
 /* Login page logo styling */
 .brand-logo img {
   object-fit: contain;
