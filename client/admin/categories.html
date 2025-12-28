@@ -6,23 +6,173 @@
   <title>Admin — Categories</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="/assets/css/styles.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .mc-hamburger {
+      border: none;
+      background: transparent;
+      color: #111;
+      padding: 0.25rem;
+      line-height: 1;
+    }
+    .mc-hamburger i {
+      font-size: 1.25rem;
+    }
+
+    .mc-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 1999;
+    }
+    .mc-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mc-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: min(82vw, 320px);
+      background: #0b0b0b;
+      color: #fff;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+    .mc-drawer.open {
+      transform: translateX(0);
+    }
+    .mc-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .mc-drawer-title {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+    .mc-drawer-close {
+      border: none;
+      background: transparent;
+      color: #fff;
+      padding: 0.25rem;
+      line-height: 1;
+    }
+    .mc-drawer-close i {
+      font-size: 1.25rem;
+    }
+    .mc-drawer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+    .mc-drawer-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.85rem 0.75rem;
+      border-radius: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+      transition: background 0.2s ease;
+      min-height: 44px;
+    }
+    .mc-drawer-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .mc-drawer-link i {
+      width: 20px;
+      text-align: center;
+      font-size: 1.05rem;
+    }
+    .mc-drawer-auth {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    body.mc-drawer-open {
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom" aria-label="Admin navigation">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="/">
-        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="30" height="30">
       </a>
-      <div class="collapse navbar-collapse show">
+
+      <div class="collapse navbar-collapse d-none d-lg-flex">
         <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="/admin/index.html">Overview</a></li>
           <li class="nav-item"><a class="nav-link" href="/admin/products.html">Products</a></li>
           <li class="nav-item"><a class="nav-link" href="/admin/orders.html">Orders</a></li>
           <li class="nav-item"><a class="nav-link active" href="/admin/categories.html">Categories</a></li>
         </ul>
+        <div class="navbar-nav">
+          <a class="nav-link" href="/">Store</a>
+        </div>
+        <div id="navbarAuth" class="d-flex align-items-center ms-auto"></div>
       </div>
+
+      <button class="mc-hamburger d-lg-none ms-auto" type="button" aria-label="Open menu" aria-controls="mcDrawer" aria-expanded="false" id="mcHamburger">
+        <i class="fa-solid fa-bars"></i>
+      </button>
     </div>
   </nav>
+
+  <div class="mc-overlay" id="mcOverlay" hidden></div>
+  <aside class="mc-drawer" id="mcDrawer" aria-label="Mobile menu drawer" hidden>
+    <div class="mc-drawer-header">
+      <div class="mc-drawer-title">Admin Menu</div>
+      <button class="mc-drawer-close" type="button" aria-label="Close menu" id="mcDrawerClose">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <nav class="mc-drawer-nav" aria-label="Mobile admin menu">
+      <a class="mc-drawer-link" href="/admin/index.html" data-mc-close>
+        <i class="fa-solid fa-gauge-high"></i>
+        <span>Dashboard</span>
+      </a>
+      <a class="mc-drawer-link" href="/admin/products.html" data-mc-close>
+        <i class="fa-solid fa-box"></i>
+        <span>Products</span>
+      </a>
+      <a class="mc-drawer-link" href="/admin/categories.html" data-mc-close>
+        <i class="fa-solid fa-tags"></i>
+        <span>Categories</span>
+      </a>
+      <a class="mc-drawer-link" href="/admin/orders.html" data-mc-close>
+        <i class="fa-solid fa-receipt"></i>
+        <span>Orders</span>
+      </a>
+      <a class="mc-drawer-link" href="/" data-mc-close>
+        <i class="fa-solid fa-store"></i>
+        <span>Store</span>
+      </a>
+    </nav>
+    <div class="mc-drawer-auth" id="mcDrawerAuth" hidden></div>
+  </aside>
 
   <main class="container">
     <div class="d-flex align-items-center justify-content-between mb-3">
@@ -67,6 +217,81 @@
     });
 
     load();
+
+    (function () {
+      const btn = document.getElementById('mcHamburger');
+      const overlay = document.getElementById('mcOverlay');
+      const drawer = document.getElementById('mcDrawer');
+      const closeBtn = document.getElementById('mcDrawerClose');
+      const authHost = document.getElementById('mcDrawerAuth');
+
+      if (!btn || !overlay || !drawer || !closeBtn) return;
+
+      const renderAuth = () => {
+        if (!authHost) return;
+        const user = (window.App && App.getUser) ? App.getUser() : null;
+        if (user) {
+          authHost.hidden = false;
+          authHost.innerHTML = `
+            <a class="mc-drawer-link" href="#" id="mcLogout" data-mc-close><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+          `;
+          authHost.querySelector('#mcLogout')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            API.auth.setToken(null);
+            App.setUser(null);
+            window.location.href = '/';
+          });
+        } else {
+          authHost.innerHTML = '';
+          authHost.hidden = true;
+        }
+      };
+
+      const open = () => {
+        renderAuth();
+        overlay.hidden = false;
+        drawer.hidden = false;
+        window.setTimeout(() => {
+          drawer.classList.add('open');
+          overlay.classList.add('open');
+        }, 10);
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('mc-drawer-open');
+      };
+
+      const close = () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('mc-drawer-open');
+        window.setTimeout(() => {
+          if (!overlay.classList.contains('open')) overlay.hidden = true;
+          if (!drawer.classList.contains('open')) drawer.hidden = true;
+        }, 220);
+      };
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (drawer.classList.contains('open')) close();
+        else open();
+      });
+
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        close();
+      });
+
+      overlay.addEventListener('click', close);
+
+      drawer.addEventListener('click', (e) => {
+        const a = e.target.closest('[data-mc-close]');
+        if (a) close();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+    })();
   </script>
 </body>
 </html>

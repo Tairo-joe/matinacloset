@@ -8,21 +8,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="/assets/css/styles.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
-    .color-swatch {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 1px solid #ddd;
-      margin-right: 4px;
-      vertical-align: middle;
-      cursor: pointer;
-    }
-    .color-swatch:hover {
-      transform: scale(1.1);
-      border-color: #999;
-    }
     .icon-logout {
       width: 24px;
       height: 24px;
@@ -31,82 +18,244 @@
       width: 24px;
       height: 24px;
     }
-    .gender-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    .mc-hamburger {
+      border: none;
+      background: transparent;
+      color: #111;
+      padding: 0.25rem;
+      line-height: 1;
     }
-    .gender-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    .mc-hamburger i {
+      font-size: 1.25rem;
     }
-    .gender-icon {
-      font-size: 4rem;
-      margin-bottom: 1rem;
+
+    .mc-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 1999;
     }
-    .main-container {
-      padding-top: 2rem;
+    .mc-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
     }
-    .men-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+    .mc-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: min(82vw, 320px);
+      background: #0b0b0b;
+      color: #fff;
+      transform: translateX(100%);
+      transition: transform 0.25s ease;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
     }
-    .women-card {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    .mc-drawer.open {
+      transform: translateX(0);
     }
-    .boys-card {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    .mc-drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
     }
-    .girls-card {
-      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    .mc-drawer-title {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      opacity: 0.9;
     }
-    .gender-card-link {
+    .mc-drawer-close {
+      border: none;
+      background: transparent;
+      color: #fff;
+      padding: 0.25rem;
+      line-height: 1;
+    }
+    .mc-drawer-close i {
+      font-size: 1.25rem;
+    }
+    .mc-drawer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+    .mc-drawer-link {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.85rem 0.75rem;
+      border-radius: 0.75rem;
+      text-decoration: none;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+      transition: background 0.2s ease;
+      min-height: 44px;
+    }
+    .mc-drawer-link:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .mc-drawer-link i {
+      width: 20px;
+      text-align: center;
+      font-size: 1.05rem;
+    }
+    .mc-drawer-auth {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    body.mc-drawer-open {
+      overflow: hidden;
+    }
+
+    /* Category Gallery Style - Full Image Panels */
+    .category-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin: 2rem 0;
+    }
+
+    .category-panel {
+      position: relative;
+      overflow: hidden;
       cursor: pointer;
-    }
-    .gender-icon img {
-      width: 140px;
-      height: 140px;
-      object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       transition: transform 0.3s ease;
-      background-color: rgba(255,255,255,0.1);
+      height: 500px;
     }
-    .gender-icon img:hover {
-      transform: scale(1.05);
+
+    .category-panel:hover {
+      transform: scale(1.02);
+      z-index: 1;
     }
-    .navbar {
-      padding-top: 0.5rem !important;
-      padding-bottom: 0.5rem !important;
+
+    .category-panel img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
-    .navbar-brand img {
-      width: 45px !important;
-      height: 45px !important;
+
+    .category-panel-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+      padding: 2rem 1.5rem 1.5rem;
+      color: white;
     }
-    .navbar-nav .nav-link {
-      padding-left: 1rem !important;
-      padding-right: 1rem !important;
+
+    .category-panel-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .category-panel-desc {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    @media (max-width: 992px) {
+      .category-gallery {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .category-panel {
+        height: 400px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .category-gallery {
+        grid-template-columns: 1fr;
+      }
+      .category-panel {
+        height: 350px;
+      }
+      .category-panel-title {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom">
+  <nav class="navbar navbar-expand-lg fixed-top bg-light border-bottom" aria-label="Main navigation">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="/">
-        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="60" height="60">
+        <img src="/LOGO.jpeg" alt="MatinaCloset Logo" width="30" height="30">
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExampleDefault" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+      <div class="collapse navbar-collapse d-none d-lg-flex">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item"><a class="nav-link" href="/men.html">Men</a></li>
           <li class="nav-item"><a class="nav-link" href="/women.html">Women</a></li>
           <li class="nav-item"><a class="nav-link" href="/boys.html">Boys</a></li>
           <li class="nav-item"><a class="nav-link" href="/girls.html">Girls</a></li>
           <li class="nav-item"><a class="nav-link" href="/cart.html"><img src="https://th.bing.com/th?q=Shopping+Mall+Bag+Logo&w=120&h=120&c=1&rs=1&qlt=70&o=7&cb=1&dpr=1.5&pid=InlineBlock&rm=3&mkt=en-SG&cc=SG&setlang=en&adlt=strict&t=1&mw=247" alt="Bag" class="icon-bag"></a></li>
+          <li class="nav-item"><a class="nav-link" href="/account.html">Account</a></li>
         </ul>
-        <div id="navbarAuth" class="d-flex"></div>
+        <div id="navbarAuth" class="d-flex align-items-center ms-auto"></div>
       </div>
+
+      <button class="mc-hamburger d-lg-none ms-auto" type="button" aria-label="Open menu" aria-controls="mcDrawer" aria-expanded="false" id="mcHamburger">
+        <i class="fa-solid fa-bars"></i>
+      </button>
     </div>
   </nav>
+
+  <div class="mc-overlay" id="mcOverlay" hidden></div>
+  <aside class="mc-drawer" id="mcDrawer" aria-label="Mobile menu drawer" hidden>
+    <div class="mc-drawer-header">
+      <div class="mc-drawer-title">Menu</div>
+      <button class="mc-drawer-close" type="button" aria-label="Close menu" id="mcDrawerClose">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <nav class="mc-drawer-nav" aria-label="Mobile menu">
+      <a class="mc-drawer-link" href="/men.html" data-mc-close>
+        <i class="fa-solid fa-person"></i>
+        <span>Men</span>
+      </a>
+      <a class="mc-drawer-link" href="/women.html" data-mc-close>
+        <i class="fa-solid fa-person-dress"></i>
+        <span>Women</span>
+      </a>
+      <a class="mc-drawer-link" href="/boys.html" data-mc-close>
+        <i class="fa-solid fa-child"></i>
+        <span>Boys</span>
+      </a>
+      <a class="mc-drawer-link" href="/girls.html" data-mc-close>
+        <i class="fa-solid fa-child-dress"></i>
+        <span>Girls</span>
+      </a>
+      <a class="mc-drawer-link" href="/" data-mc-close>
+        <i class="fa-solid fa-store"></i>
+        <span>CLOSET</span>
+      </a>
+    </nav>
+    <div class="mc-drawer-auth" id="mcDrawerAuth"></div>
+  </aside>
 
   <main class="container main-container">
     <!-- HERO SECTION -->
@@ -138,60 +287,41 @@
       <p class="lead text-muted">Discover the perfect fashion for everyone in your family</p>
     </div>
 
-    <div class="row g-4 mb-5">
+    <!-- Category Gallery - Full Image Panels -->
+    <div class="category-gallery mb-5">
       <!-- Men Section -->
-      <div class="col-md-6 col-lg-3">
-        <div class="card h-100 border-0 shadow-sm gender-card men-card gender-card-link" onclick="location.href='/men.html'">
-          <div class="card-body text-center text-white p-4">
-            <div class="gender-icon mb-3">
-              <img src="https://tse1.mm.bing.net/th/id/OIP.yD_gratJV8i_4kbSZdqg9AHaJO?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Men's Fashion">
-            </div>
-            <h3 class="card-title">Men</h3>
-            <p class="card-text">Stylish men's fashion</p>
-            <div class="badge bg-white text-dark">Shop Now →</div>
-          </div>
+      <div class="category-panel" onclick="location.href='/men.html'">
+        <img src="https://tse1.mm.bing.net/th/id/OIP.yD_gratJV8i_4kbSZdqg9AHaJO?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Men's Fashion">
+        <div class="category-panel-overlay">
+          <div class="category-panel-title">Men</div>
+          <div class="category-panel-desc">Stylish men's fashion</div>
         </div>
       </div>
 
       <!-- Women Section -->
-      <div class="col-md-6 col-lg-3">
-        <div class="card h-100 border-0 shadow-sm gender-card women-card gender-card-link" onclick="location.href='/women.html'">
-          <div class="card-body text-center text-white p-4">
-            <div class="gender-icon mb-3">
-              <img src="https://www1.assets-gap.com/webcontent/0060/378/082/cn60378082.jpg?q=h&w=520" alt="Women's Fashion">
-            </div>
-            <h3 class="card-title">Women</h3>
-            <p class="card-text">Trendy women's styles</p>
-            <div class="badge bg-white text-dark">Shop Now →</div>
-          </div>
+      <div class="category-panel" onclick="location.href='/women.html'">
+        <img src="https://www1.assets-gap.com/webcontent/0060/378/082/cn60378082.jpg?q=h&w=520" alt="Women's Fashion">
+        <div class="category-panel-overlay">
+          <div class="category-panel-title">Women</div>
+          <div class="category-panel-desc">Trendy women's styles</div>
         </div>
       </div>
 
       <!-- Boys Section -->
-      <div class="col-md-6 col-lg-3">
-        <div class="card h-100 border-0 shadow-sm gender-card boys-card gender-card-link" onclick="location.href='/boys.html'">
-          <div class="card-body text-center text-white p-4">
-            <div class="gender-icon mb-3">
-              <img src="https://www.gap.com/webcontent/0059/977/992/cn59977992.jpg" alt="Boys' Fashion">
-            </div>
-            <h3 class="card-title">Boys</h3>
-            <p class="card-text">Cool boys' clothing</p>
-            <div class="badge bg-white text-dark">Shop Now →</div>
-          </div>
+      <div class="category-panel" onclick="location.href='/boys.html'">
+        <img src="https://www.gap.com/webcontent/0059/977/992/cn59977992.jpg" alt="Boys' Fashion">
+        <div class="category-panel-overlay">
+          <div class="category-panel-title">Boys</div>
+          <div class="category-panel-desc">Cool boys' clothing</div>
         </div>
       </div>
 
       <!-- Girls Section -->
-      <div class="col-md-6 col-lg-3">
-        <div class="card h-100 border-0 shadow-sm gender-card girls-card gender-card-link" onclick="location.href='/girls.html'">
-          <div class="card-body text-center text-white p-4">
-            <div class="gender-icon mb-3">
-              <img src="https://www.gap.com/webcontent/0060/032/158/cn60032158.jpg" alt="Girls' Fashion">
-            </div>
-            <h3 class="card-title">Girls</h3>
-            <p class="card-text">Cute girls' outfits</p>
-            <div class="badge bg-white text-dark">Shop Now →</div>
-          </div>
+      <div class="category-panel" onclick="location.href='/girls.html'">
+        <img src="https://www.gap.com/webcontent/0060/032/158/cn60032158.jpg" alt="Girls' Fashion">
+        <div class="category-panel-overlay">
+          <div class="category-panel-title">Girls</div>
+          <div class="category-panel-desc">Cute girls' outfits</div>
         </div>
       </div>
     </div>
@@ -246,6 +376,208 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     App.initNavbar();
+
+    // Render auth menu function - accessible globally
+    function renderDrawerAuth() {
+      const authHost = document.getElementById('mcDrawerAuth');
+      if (!authHost) return;
+      
+      // Always show the auth section
+      authHost.style.display = 'flex';
+      authHost.hidden = false;
+      authHost.removeAttribute('hidden');
+      
+      // Get user - always check localStorage directly for most accurate state
+      let user = null;
+      
+      // Check localStorage directly first (most reliable)
+      try {
+        const userStr = localStorage.getItem('mc_user');
+        if (userStr && userStr !== 'null' && userStr.trim() !== '') {
+          user = JSON.parse(userStr);
+        }
+      } catch (e) {
+        // Silently fail
+      }
+      
+      // Also try App.getUser() as backup
+      if (!user) {
+        try {
+          if (window.App && typeof App.getUser === 'function') {
+            const appUser = App.getUser();
+            if (appUser && appUser.id) {
+              user = appUser;
+            }
+          }
+        } catch (e) {
+          // Silently fail
+        }
+      }
+      
+      // Validate user has required properties
+      if (user && user.id && user.email) {
+        // If admin: show Admin, Cart, and Logout
+        // If not admin: show Cart and Logout
+        const adminLink = user.role === 'admin' 
+          ? '<a class="mc-drawer-link" href="/admin/index.html" data-mc-close><i class="fa-solid fa-user-shield"></i><span>Admin</span></a>'
+          : '';
+        
+        authHost.innerHTML = `
+          ${adminLink}
+          <a class="mc-drawer-link" href="/cart.html" data-mc-close><i class="fa-solid fa-bag-shopping"></i><span>Cart</span></a>
+          <a class="mc-drawer-link" href="#" id="mcLogout" data-mc-close><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></a>
+        `;
+        
+        const logoutBtn = authHost.querySelector('#mcLogout');
+        if (logoutBtn) {
+          // Remove old listeners by cloning
+          const newLogoutBtn = logoutBtn.cloneNode(true);
+          logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
+          
+          newLogoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Clear authentication
+            if (window.API && window.API.auth) {
+              API.auth.setToken(null);
+            }
+            if (window.App && typeof App.setUser === 'function') {
+              App.setUser(null);
+            }
+            // Also clear localStorage directly
+            try {
+              localStorage.removeItem('mc_user');
+              localStorage.removeItem('mc_token');
+            } catch (err) {
+              // Silently fail
+            }
+            // Refresh menu immediately
+            renderDrawerAuth();
+            // Then redirect
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 100);
+          });
+        }
+      } else {
+        // Show Login and Register when not logged in
+        authHost.innerHTML = `
+          <a class="mc-drawer-link" href="/login.html" data-mc-close><i class="fa-solid fa-right-to-bracket"></i><span>Login</span></a>
+          <a class="mc-drawer-link" href="/register.html" data-mc-close><i class="fa-solid fa-user-plus"></i><span>Register</span></a>
+        `;
+      }
+    }
+
+    (function () {
+      const btn = document.getElementById('mcHamburger');
+      const overlay = document.getElementById('mcOverlay');
+      const drawer = document.getElementById('mcDrawer');
+      const closeBtn = document.getElementById('mcDrawerClose');
+
+      if (!btn || !overlay || !drawer || !closeBtn) return;
+
+      const open = () => {
+        renderDrawerAuth();
+        overlay.hidden = false;
+        drawer.hidden = false;
+        window.setTimeout(() => {
+          drawer.classList.add('open');
+          overlay.classList.add('open');
+        }, 10);
+        btn.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('mc-drawer-open');
+      };
+
+      const close = () => {
+        drawer.classList.remove('open');
+        overlay.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('mc-drawer-open');
+        window.setTimeout(() => {
+          if (!overlay.classList.contains('open')) overlay.hidden = true;
+          if (!drawer.classList.contains('open')) drawer.hidden = true;
+        }, 220);
+      };
+
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (drawer.classList.contains('open')) close();
+        else open();
+      });
+
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        close();
+      });
+
+      overlay.addEventListener('click', close);
+
+      drawer.addEventListener('click', (e) => {
+        const a = e.target.closest('[data-mc-close]');
+        if (a) close();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+    })();
+
+    // Initialize auth state on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize auth immediately
+      renderDrawerAuth();
+      
+      // Also try after scripts load to ensure App is ready
+      setTimeout(renderDrawerAuth, 200);
+      setTimeout(renderDrawerAuth, 500);
+      setTimeout(renderDrawerAuth, 1000);
+    });
+
+    // Listen for storage changes (when user logs in/out in another tab or after redirect)
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'mc_user' || e.key === 'mc_token') {
+        renderDrawerAuth();
+      }
+    });
+
+    // Also listen for custom events that might be triggered after login
+    window.addEventListener('userChanged', function() {
+      renderDrawerAuth();
+    });
+
+    // Refresh menu when page becomes visible (after logout redirect)
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) {
+        renderDrawerAuth();
+      }
+    });
+
+    // Refresh menu on focus (when user returns to tab)
+    window.addEventListener('focus', function() {
+      renderDrawerAuth();
+    });
+
+    // Override App.setUser to refresh menu when user changes
+    // Try immediately and also after a delay to catch App initialization
+    function setupAppSetUserOverride() {
+      if (window.App && typeof window.App.setUser === 'function') {
+        // Only override if not already overridden
+        if (!window.App.setUser._drawerAuthOverride) {
+          const originalSetUser = window.App.setUser;
+          window.App.setUser = function(user) {
+            originalSetUser.call(this, user);
+            renderDrawerAuth();
+          };
+          window.App.setUser._drawerAuthOverride = true;
+        }
+      }
+    }
+    
+    // Try to set up override immediately
+    setupAppSetUserOverride();
+    
+    // Also try after scripts load
+    setTimeout(setupAppSetUserOverride, 100);
+    setTimeout(setupAppSetUserOverride, 500);
 
     // Handle mobile navbar to prevent content overlap
     document.addEventListener('DOMContentLoaded', function() {

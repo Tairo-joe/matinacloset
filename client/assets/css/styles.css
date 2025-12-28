@@ -1,13 +1,13 @@
 /* MOBILE-FIRST RESPONSIVE BASE STYLES */
 body { 
-  padding-top: 60px; /* Reduced navbar height */
+  padding-top: 35px; /* Smaller navbar for all pages */
   overflow-x: hidden;
-  min-height: auto; /* Removed 100vh */
+  min-height: auto;
 }
 
-/* Main content spacing */
+/* Main content spacing - bring content down more */
 main.container {
-  padding-top: 1rem;
+  padding-top: 6rem; /* Even more space to see products */
   max-width: 100%;
   padding-left: 15px;
   padding-right: 15px;
